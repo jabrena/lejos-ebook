@@ -359,7 +359,6 @@ public class GPS extends Thread {
 						//System.out.println(token);
 						
 						if (token.equals(GGASentence.HEADER)){
-							System.out.println(token);
 							parseGGA(s);
 						}else if (token.equals(RMCSentence.HEADER)){
 							//parseRMC(s);
@@ -462,12 +461,8 @@ public class GPS extends Thread {
 	 */
 	private void parseGGA(String nmeaSentence){
 
-		System.out.println(nmeaSentence);
-		
 		ggaSentence.setSentence(nmeaSentence);
 		ggaSentence.parse();
-
-		System.out.println("PARSED2");
 		
 		this.RAWtime = ggaSentence.getTime();
 		updateTime();
@@ -549,7 +544,6 @@ public class GPS extends Thread {
 			yy = Integer.parseInt(rd.substring(4, 6));
 		}
 
-		//updateDateValues(dd,mm,yy);
 		date.setDay(dd);
 		date.setMonth(mm);
 		date.setYear(yy);

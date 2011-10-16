@@ -9,105 +9,28 @@ package jab.lejos.gps;
  * GGA and RMC Sentence needs to validate data.
  * This class has methods to validate receivedad data
  * 
- * @author BB
  * @author Juan Antonio Brenha Moral
+ * @author BB
  *
  */
 public class NMEASentence {
 
-	static byte checksum;
 	static protected String nmeaSentence = "";
 	protected StringTokenizer st;
+	
+	public static final int LATITUDE = 0;
+	public static final int LONGITUDE = 1;
 
 	/* GETTERS & SETTERS */
 	
 	/**
-	 * Set a new nmea sentence into the object
+	 * Set a new NMEA sentence into the object
 	 * 
 	 * @param sentence
 	 */
 	public void setSentence(String sentence){
 		nmeaSentence = sentence;
 	}
-
-	private static byte getChecksum() {
-		return checksum;
-	}
-
-	/* CHECKSUM METHODS */
-	
-	/**
-	 * Return if your NMEA Sentence is valid or not
-	 * 
-	 * @return
-	 */
-	static public boolean isValid(){
-		int end = nmeaSentence.indexOf('*');
-		String checksumStr = nmeaSentence.substring(end + 1, end + 3);
-		checksum = convertChecksum(checksumStr);
-		return(getChecksum() == calcChecksum());
-	}
-
-	/**
-	 * Return if your NMEA Sentence is valid or not
-	 * 
-	 * @param sentence
-	 * @return
-	 */
-	static public boolean isValid(String sentence){
-		nmeaSentence = sentence;
-		int end = nmeaSentence.indexOf('*');
-		String checksumStr = nmeaSentence.substring(end + 1, end + 3);
-		checksum = convertChecksum(checksumStr);
-		return(getChecksum() == calcChecksum());
-	}
-	
-
-	/**
-	 * Method designed to calculate a checksum using data
-	 * 
-	 * @return
-	 */
-	private static byte calcChecksum() {
-		int start = nmeaSentence.indexOf('$');
-		int end = nmeaSentence.indexOf('*');
-		if(end < 0) {
-			end = nmeaSentence.length();
-		}
-		byte checksum = (byte) nmeaSentence.charAt(start + 1);
-		for (int index = start + 2; index < end; ++index) {
-			checksum ^= (byte) nmeaSentence.charAt(index);
-		}
-		return checksum;
-	}
-
-	/**
-	 * Method used to create a checksum with String
-	 * 
-	 * @param checksum_string
-	 * @return
-	 */
-	private static byte convertChecksum(String checksum_string) {
-		byte checksum;
-		checksum = (byte)((hexCharToByte(checksum_string.charAt(0)) & 0xF ) << 4 );
-		checksum = (byte)(checksum | hexCharToByte(checksum_string.charAt(1)) & 0xF );
-		return checksum;
-	}
-	
-	/**
-	 * NOTE: This functionality can be replaced by Byte.parseByte()
-	 * if we ever make a Byte class.
-	 * @param hex_char
-	 * @return
-	 */
-	private static byte hexCharToByte(char hex_char) {
-	  if( hex_char > 57 )
-		  return((byte)(hex_char - 55));
-	  else
-		  return((byte)(hex_char - 48));
-	}
-
-	/* UTILITIES METHODS */
 
 	/**
 	 * Any GPS Receiver gives Lat/Lon data in the following way:
@@ -137,7 +60,7 @@ public class NMEASentence {
 
 		//1. Count characters until character '.'
 		int dotPosition = DD_MM.indexOf(doubleCharacterSeparator);
-		if(CoordenateType == 0){
+		if(CoordenateType == this.LATITUDE){
 			//Latitude Management
 			DDMM = DD_MM.substring(0, dotPosition);
 			if(DDMM.length() == 4){
@@ -152,7 +75,7 @@ public class NMEASentence {
 				//throw new NumberFormatException();
 			}
 		}else{
-			//Latitude Management
+			//Longitude Management
 			DDMM = DD_MM.substring(0, dotPosition);
 			if(DDMM.length() == 5){
 				degrees = Float.parseFloat(DDMM.substring(0, 3));
@@ -174,5 +97,19 @@ public class NMEASentence {
 		decDegrees = (float)(degrees + (minutes * (1.0 / 60.0)) + (seconds * (1.0 / 3600.0)));
 		
 		return decDegrees;
+	}
+	
+	//Idea
+	//http://rosettacode.org/wiki/Determine_if_a_string_is_numeric#Java
+	public final boolean isNumeric(final String s) {
+		if (s == null || s.isEmpty()) return false;
+		for (int x = 0; x < s.length(); x++) {
+		    final char c = s.charAt(x);
+		    if (x == 0 && (c == '-')) continue;  // negative
+		    if ((c >= '0') && (c <= '9')) continue;  // 0 - 9
+		    if (c == '.') continue; // float or double values
+		    return false; // invalid
+		}
+		return true; // valid
 	}
 }
