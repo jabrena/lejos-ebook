@@ -35,18 +35,19 @@ package jab.lejos.gps;
  *      *47          the checksum data, always begins with *
  * 
  * @author Juan Antonio Brenha Moral
+ * 
  */
 public class GGASentence extends NMEASentence{
 	
 	//GGA
 	private String nmeaHeader = "";
-	private float dateTimeOfFix = 0;
+	private int dateTimeOfFix = 0;
 	private float latitude = 0;
 	private String latitudeDirection = "";
 	private float longitude = 0;
 	private String longitudeDirection = "";
-	private float quality;
-	private float satellitesTracked = 0;
+	private int quality = 0;
+	private int satellitesTracked = 0;
 	private float hdop = 0;
 	private float altitude = 0;
 	private String altitudeUnits;
@@ -55,6 +56,9 @@ public class GGASentence extends NMEASentence{
 
 	//Header
 	public static final String HEADER = "$GPGGA";
+	
+	//NMEA parts
+	private String part1,part2,part3,part4,part5,part6,part7,part8,part9,part10,part11 = "";
 
 	/*
 	 * GETTERS & SETTERS
@@ -108,7 +112,7 @@ public class GGASentence extends NMEASentence{
 	 * @return The time as a UTC integer. 123519 = 12:35:19 UTC
 	 */
 	public int getTime(){
-		return Math.round(dateTimeOfFix);
+		return dateTimeOfFix;
 	}
 	
 	/**
@@ -118,7 +122,7 @@ public class GGASentence extends NMEASentence{
 	 * @return Number of satellites e.g. 8
 	 */
 	public int getSatellitesTracked() {
-		return Math.round(satellitesTracked);
+		return satellitesTracked;
 	}
 
 	/**
@@ -127,7 +131,7 @@ public class GGASentence extends NMEASentence{
 	 * @return
 	 */
 	public int getQuality(){
-		return Math.round(quality);
+		return quality;
 	}
 
 	
@@ -135,37 +139,51 @@ public class GGASentence extends NMEASentence{
 	 * Method used to parse a GGA Sentence
 	 */
 	public void parse(){
-		//StringTokenizer st = new StringTokenizer(nmeaSentence,",");
 		st = new StringTokenizer(nmeaSentence,",");
-		String q = "";
-		String h = "";
-		
+
 		try{
-			nmeaHeader = st.nextToken();//Global Positioning System Fix Data
-			dateTimeOfFix = Float.parseFloat((String)st.nextToken());//UTC Time
-			latitude = degreesMinToDegrees(st.nextToken(),0);
-			latitudeDirection = st.nextToken();//N
-			longitude = degreesMinToDegrees(st.nextToken(),1);
-			longitudeDirection = st.nextToken();//E
-			q = st.nextToken();
-			if(q.length() == 0){
-				quality = 0;
-			}else{
-				quality = Float.parseFloat(q);//Fix quality
-			}
-			//quality = Float.parseFloat(st.nextToken());//Fix quality
-			satellitesTracked = Float.parseFloat((String)st.nextToken());//Number of satellites being tracked
+			
+			//Extracting data from a GGA Sentence
+			
+			part1 = st.nextToken();//NMEA header
+			part2 = st.nextToken();//Global Positioning System Fix Data
+			part3 = st.nextToken();//Latitude
+			part4 = st.nextToken();//Latitude Direction
+			part5 = st.nextToken();//Longitude
+			part6 = st.nextToken();//Longitude Direction
+			part7 = st.nextToken();//Quality
+			part8 = st.nextToken();//Satellite Tracked
+			part9 = st.nextToken();//Hdop
+			part10 = st.nextToken();//Altitude
+			
+			st = null;
+			
+			//Processing GGA data
+			
+			nmeaHeader = part1;
 
-			h = st.nextToken();
-			if(h.length() == 0){
-				hdop = 0;
+			if(part2.length() == 0){
+				dateTimeOfFix = 0;
 			}else{
-				hdop = Float.parseFloat(h);//Horizontal dilution of position
+				dateTimeOfFix = Math.round(Float.parseFloat(part2));
 			}
-			//hdop = Float.parseFloat(st.nextToken());//Horizontal dilution of position
-			altitude = Float.parseFloat((String)st.nextToken());
+						
+			if(isNumeric(part3)){
+				latitude = degreesMinToDegrees(part3,NMEASentence.LATITUDE);
+			}else{
+				latitude = 0f;
+			}
+			
+			latitudeDirection = part4;
+			
+			if(isNumeric(part5)){
+				longitude = degreesMinToDegrees(part5,NMEASentence.LONGITUDE);
+			}else{
+				longitude = 0f;
+			}
 
-			//Improve quality data
+			longitudeDirection = part6;
+			
 			if (longitudeDirection.equals("E") == false) {
 				longitude = -longitude;
 			}
@@ -173,14 +191,36 @@ public class GGASentence extends NMEASentence{
 				latitude = -latitude;
 			}
 
-			System.out.println("PARSED");
+			if(part7.length() == 0){
+				quality = 0;
+			}else{
+				quality = Math.round(Float.parseFloat(part7));//Fix quality
+			}
+
+			if(part8.length() == 0){
+				satellitesTracked = 0;
+			}else{
+				satellitesTracked = Math.round(Float.parseFloat(part8));
+			}
+
+			if(part9.length() == 0){
+				hdop = 0;
+			}else{
+				hdop = Float.parseFloat(part9);//Horizontal dilution of position
+			}
+			
+			if(isNumeric(part10)){
+				altitude = Float.parseFloat(part10);
+			}else{
+				altitude = 0f;
+			}
 			
 		}catch(NoSuchElementException e){
-			System.out.println("NoSuchElementException");
+			System.err.println("NoSuchElementException");
 		}catch(NumberFormatException e){
-			System.out.println("NumberFormatException");
+			System.err.println("NumberFormatException");
 		}catch(Exception e){
-			System.out.println("Exception");
+			System.err.println("Exception");
 		}
 
 	}//End parse

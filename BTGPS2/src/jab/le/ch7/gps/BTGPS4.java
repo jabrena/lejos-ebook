@@ -1,10 +1,11 @@
 package jab.le.ch7.gps;
 
 import jab.lejos.gps.GPS;
+import jab.lejos.gps.Date;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
+//import java.util.Date;
 import java.util.Vector;
 
 import javax.bluetooth.RemoteDevice;
@@ -167,21 +168,13 @@ public class BTGPS4 {
 			
 		LCD.clear();
 		
-		int NSAT = 0;
-		double lat = 0;
-		
 		while(!Button.ESCAPE.isDown()){
 						
 			tics++;
+
+			//System.out.println("ITERATION: " + tics);
 			
-			lat = gps.getLatitude();
-			//NSAT = gps.getSatellitesTracked();
-			System.out.println("Lat: " + lat);
-			//System.out.println("NSAT: " + NSAT);
-			
-			System.out.println(tics);
-			
-			//showGGAUI();
+			showGGAUI();
 			
 			try {Thread.sleep(miliseconds);} catch (Exception e) {}
 			
@@ -198,7 +191,8 @@ public class BTGPS4 {
 		LCD.drawString("GGA", 0, 2);
 		LCD.drawString(""+ tics, 10, 2);
 
-		//LCD.drawString("Tim " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "", 0, 3);
+		now = gps.getDate();
+		LCD.drawString("Tim " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "", 0, 3);
 		LCD.drawString("Lat " + gps.getLatitude(), 0, 4);
 		LCD.drawString("" + gps.getLatitudeDirection() , 15, 4);
 		LCD.drawString("Lon " + gps.getLongitude(), 0, 5);
