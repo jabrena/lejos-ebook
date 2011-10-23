@@ -216,7 +216,7 @@ public class GGASentence extends NMEASentence{
 		}catch(NumberFormatException e){
 			//System.err.println("GGASentence: NumberFormatException");
 		}catch(Exception e){
-			System.err.println("GGASentence: Exception");
+			//System.err.println("GGASentence: Exception");
 		}
 
 	}//End parse

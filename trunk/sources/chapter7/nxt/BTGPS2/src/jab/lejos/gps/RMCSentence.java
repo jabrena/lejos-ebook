@@ -221,7 +221,7 @@ public class RMCSentence extends NMEASentence{
 		}catch(NumberFormatException e){
 			//System.err.println("RMCSentence: NumberFormatException");
 		}catch(Exception e){
-			System.err.println("RMCSentence: Exception");
+			//System.err.println("RMCSentence: Exception");
 		}
 
 	}//End Parse

@@ -381,7 +381,7 @@ public class GPS extends Thread {
 				}catch(ArrayIndexOutOfBoundsException e){
 					//System.out.println("GPS: ArrayIndexOutOfBoundsException");
 				}catch(Exception e){
-					System.out.println("GPS: Exception");
+					//System.out.println("GPS: Exception");
 				}finally{
 					//Reset
 					token = "";
