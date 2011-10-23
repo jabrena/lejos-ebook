@@ -1,7 +1,4 @@
 package jab.lejos.gps;
-//package lejos.pgs;
-
-import java.util.*;
 
 /**
  * This class has been designed to manage a GSV Sentence
@@ -32,21 +29,23 @@ public class GSVSentence extends NMEASentence{
 	
 	//GGA
 	private String nmeaHeader = "";
-	private float satellitesTracked = 0;
-	private final int maximumSatellites = 4;//0,1,2,3
-	NMEASatellite ns1;
-	NMEASatellite ns2;
-	NMEASatellite ns3;
-	NMEASatellite ns4;
+	private int satellitesTracked = 0;
+	private final int MAXIMUMSATELLITES = 4;
+	private NMEASatellite ns1;
+	private NMEASatellite ns2;
+	private NMEASatellite ns3;
+	private NMEASatellite ns4;
 	
 	//Header
 	public static final String HEADER = "$GPGSV";
+
+	//NMEA parts
+	private String part1,part2,part3,part4,part5,part6,part7,part8,part9,part10,part11,part12,part13,part14,part15,part16,part17,part18,part19 = "";
 
 	/*
 	 * Constructor
 	 */
 	public GSVSentence(){
-		//ns = new NMEASatellite[maximumSatellites];
 		ns1 = new NMEASatellite();
 		ns2 = new NMEASatellite();
 		ns3 = new NMEASatellite();
@@ -66,7 +65,7 @@ public class GSVSentence extends NMEASentence{
 	 * @return Number of satellites e.g. 8
 	 */
 	public int getSatellitesTracked() {
-		return Math.round(satellitesTracked);
+		return satellitesTracked;
 	}
 
 	/**
@@ -96,53 +95,179 @@ public class GSVSentence extends NMEASentence{
 	public void parse(){
 		//StringTokenizer st = new StringTokenizer(nmeaSentence,",");
 		st = new StringTokenizer(nmeaSentence,",");
-		float PRN = 0;
-		float elevation = 0;
-		float azimuth = 0;
-		float SNR = 0;
+		int PRN = 0;
+		int elevation = 0;
+		int azimuth = 0;
+		int SNR = 0;
 
-		
 		try{
-			nmeaHeader = st.nextToken();//GPS Satellites in view
-			st.nextToken();//Message number
-			satellitesTracked = Float.parseFloat((String)st.nextToken());//Number of satellites being tracked
+			
+			//Extracting data from a GSV Sentence
+			
+			part1 = st.nextToken();//GPS Satellites in view
+			part2 = st.nextToken();//Message number
+			part3 = st.nextToken();//
+			part4 = st.nextToken();//
+			part5 = st.nextToken();//
+			part6 = st.nextToken();//
+			part7 = st.nextToken();//
+			part8 = st.nextToken();//
+			part9 = st.nextToken();//
+			part10 = st.nextToken();//
+			part11 = st.nextToken();//
+			part12 = st.nextToken();//
+			part13 = st.nextToken();//
+			part14 = st.nextToken();//
+			part15 = st.nextToken();//
+			part16 = st.nextToken();//
+			part17 = st.nextToken();//
+			part18 = st.nextToken();//
+			part19 = st.nextToken();//
+			
+			st = null;
+			
+			nmeaHeader = part1;
+			
+			if(part3.length() == 0){
+				satellitesTracked = 0;
+			}else{
+				satellitesTracked = Math.round(Float.parseFloat(part3));
+			}
+			
+			if(satellitesTracked > 0){
+				
+				//SAT 1
+				
+				if(part4.length() == 0){
+					PRN = 0;
+				}else{
+					PRN = Math.round(Float.parseFloat(part4));
+				}
 
-			PRN = Float.parseFloat((String)st.nextToken());
-			elevation = Float.parseFloat((String)st.nextToken());
-			azimuth = Float.parseFloat((String)st.nextToken());
-			SNR = Float.parseFloat((String)st.nextToken());
-			ns1.setPRN(Math.round(PRN));
-			ns1.setElevation(Math.round(elevation));
-			ns1.setAzimuth(Math.round(azimuth));
-			ns1.setSNR(Math.round(SNR));
-			PRN = Float.parseFloat((String)st.nextToken());
-			elevation = Float.parseFloat((String)st.nextToken());
-			azimuth = Float.parseFloat((String)st.nextToken());
-			SNR = Float.parseFloat((String)st.nextToken());
-			ns2.setPRN(Math.round(PRN));
-			ns2.setElevation(Math.round(elevation));
-			ns2.setAzimuth(Math.round(azimuth));
-			ns2.setSNR(Math.round(SNR));
-			PRN = Float.parseFloat((String)st.nextToken());
-			elevation = Float.parseFloat((String)st.nextToken());
-			azimuth = Float.parseFloat((String)st.nextToken());
-			SNR = Float.parseFloat((String)st.nextToken());
-			ns3.setPRN(Math.round(PRN));
-			ns3.setElevation(Math.round(elevation));
-			ns3.setAzimuth(Math.round(azimuth));
-			ns3.setSNR(Math.round(SNR));
-			PRN = Float.parseFloat((String)st.nextToken());
-			elevation = Float.parseFloat((String)st.nextToken());
-			azimuth = Float.parseFloat((String)st.nextToken());
-			SNR = Float.parseFloat((String)st.nextToken());
-			ns4.setPRN(Math.round(PRN));
-			ns4.setElevation(Math.round(elevation));
-			ns4.setAzimuth(Math.round(azimuth));
-			ns4.setSNR(Math.round(SNR));
+				if(part5.length() == 0){
+					elevation = 0;
+				}else{
+					elevation = Math.round(Float.parseFloat(part5));
+				}
+
+				if(part6.length() == 0){
+					azimuth = 0;
+				}else{
+					azimuth = Math.round(Float.parseFloat(part6));
+				}
+
+				if(part7.length() == 0){
+					SNR = 0;
+				}else{
+					SNR = Math.round(Float.parseFloat(part7));
+				}
+
+				ns1.setPRN(PRN);
+				ns1.setElevation(elevation);
+				ns1.setAzimuth(azimuth);
+				ns1.setSNR(SNR);
+				
+				//SAT 2
+				
+				if(part8.length() == 0){
+					PRN = 0;
+				}else{
+					PRN = Math.round(Float.parseFloat(part8));
+				}
+
+				if(part9.length() == 0){
+					elevation = 0;
+				}else{
+					elevation = Math.round(Float.parseFloat(part9));
+				}
+
+				if(part10.length() == 0){
+					azimuth = 0;
+				}else{
+					azimuth = Math.round(Float.parseFloat(part10));
+				}
+
+				if(part11.length() == 0){
+					SNR = 0;
+				}else{
+					SNR = Math.round(Float.parseFloat(part11));
+				}
+				
+				ns2.setPRN(PRN);
+				ns2.setElevation(elevation);
+				ns2.setAzimuth(azimuth);
+				ns2.setSNR(SNR);
+				
+				//SAT 3
+
+				if(part12.length() == 0){
+					PRN = 0;
+				}else{
+					PRN = Math.round(Float.parseFloat(part12));
+				}
+
+				if(part13.length() == 0){
+					elevation = 0;
+				}else{
+					elevation = Math.round(Float.parseFloat(part13));
+				}
+
+				if(part14.length() == 0){
+					azimuth = 0;
+				}else{
+					azimuth = Math.round(Float.parseFloat(part14));
+				}
+
+				if(part15.length() == 0){
+					SNR = 0;
+				}else{
+					SNR = Math.round(Float.parseFloat(part15));
+				}
+				
+				ns3.setPRN(PRN);
+				ns3.setElevation(elevation);
+				ns3.setAzimuth(azimuth);
+				ns3.setSNR(SNR);
+				
+				// SAT 4
+
+				if(part16.length() == 0){
+					PRN = 0;
+				}else{
+					PRN = Math.round(Float.parseFloat(part16));
+				}
+
+				if(part17.length() == 0){
+					elevation = 0;
+				}else{
+					elevation = Math.round(Float.parseFloat(part17));
+				}
+
+				if(part18.length() == 0){
+					azimuth = 0;
+				}else{
+					azimuth = Math.round(Float.parseFloat(part18));
+				}
+
+				if(part19.length() == 0){
+					SNR = 0;
+				}else{
+					SNR = Math.round(Float.parseFloat(part19));
+				}
+				
+				ns4.setPRN(PRN);
+				ns4.setElevation(elevation);
+				ns4.setAzimuth(azimuth);
+				ns4.setSNR(SNR);				
+				
+			}
+			
 		}catch(NoSuchElementException e){
-			//Empty
-		}catch(NumberFormatException e2){
-			//Empty
+			//System.err.println("GSVSentence: NoSuchElementException");
+		}catch(NumberFormatException e){
+			//System.err.println("GSVSentence: NumberFormatException");
+		}catch(Exception e){
+			System.err.println("GSVSentence: Exception");
 		}
 
 	}//End parse

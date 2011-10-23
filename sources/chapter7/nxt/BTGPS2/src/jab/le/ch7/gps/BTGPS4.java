@@ -174,7 +174,10 @@ public class BTGPS4 {
 
 			//System.out.println("ITERATION: " + tics);
 			
-			showGGAUI();
+			//showGGAUI();
+			//showRMCUI();
+			
+			showSatUI();
 			
 			try {Thread.sleep(miliseconds);} catch (Exception e) {}
 			
@@ -200,6 +203,31 @@ public class BTGPS4 {
 		LCD.drawString("Alt " + gps.getAltitude(), 0, 6);
 		LCD.drawString("Sat " + gps.getSatellitesTracked(), 0, 7);
 		//LCD.drawString("QOS " + gps.getFixMode(), 6, 7);
+		LCD.refresh();
+	}
+	
+	/**
+	 * Show RMC Data from GPS
+	 */
+	private static void showRMCUI(){
+		refreshSomeLCDLines();
+		LCD.drawString("RMC", 0, 2);
+		
+		LCD.drawString("Dat " + now.getDay() + "/" + now.getMonth() + "/" + now.getYear() + "", 0, 3);
+		LCD.drawString("Com " + gps.getCompassDegrees(), 0, 4);
+		LCD.refresh();
+	}	
+	
+	private static void showSatUI(){
+		refreshSomeLCDLines();
+		LCD.drawString("Sat quality data", 0, 2);
+
+		//LCD.drawString("Mode " + gps.getSelectionType(), 0, 3);
+		//LCD.drawString("Value " + gps.getFixType(), 8, 3);
+		LCD.drawString("NSat " + gps.getSatellitesTracked(), 0, 4);
+		LCD.drawString("PDOP " + gps.getPDOP(), 0, 5);
+		LCD.drawString("HDOP " + gps.getHDOP(), 0, 6);
+		LCD.drawString("VDOP " + gps.getVDOP(), 0, 7);
 		LCD.refresh();
 	}
 	

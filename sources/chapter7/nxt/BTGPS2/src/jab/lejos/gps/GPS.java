@@ -52,9 +52,10 @@ public class GPS extends Thread {
 	private int quality = 0;
 	
 	//RMC
-	private float speed = 0;
+	private String status = "";
+	private float speed = 0f;
 	private int RAWdate = 0;
-	private float compassDegrees  = 0;
+	private float compassDegrees  = 0f;
 	
 	//GSV
 	private NMEASatellite[] ns;
@@ -100,13 +101,17 @@ public class GPS extends Thread {
 		vtgSentence = new VTGSentence();
 		gsvSentence = new GSVSentence();
 		ns = new NMEASatellite[4];
+		ns[0] = new NMEASatellite();
+		ns[1] = new NMEASatellite();
+		ns[2] = new NMEASatellite();
+		ns[3] = new NMEASatellite();
 		gsaSentence = new GSASentence();
 		SV = new int[12];
 		
 		date = new Date();
 		
 		this.in = in;
-		//this.setDaemon(true); // Must be set before thread starts
+		this.setDaemon(true); // Must be set before thread starts
 		this.start();
 	}
 	
@@ -186,6 +191,17 @@ public class GPS extends Thread {
 	 */
 	public int getQuality(){
 		return quality;
+	}
+
+	/**
+	 * Get GPS status
+	 * 
+	 * Active or Void
+	 * 
+	 * @return
+	 */
+	public String getStatus() {
+		return status;
 	}
 	
 	/**
@@ -348,39 +364,24 @@ public class GPS extends Thread {
 					continue;
 				}
 				
-				//2008/07/28
-				//Debug checksum validation
-				//Class 19: java.lang.StringIndexOutOfBoundsException
 				try{
-					//if(NMEASentence.isValid(s)){
-						tokenizer = new StringTokenizer(s);
-						token = tokenizer.nextToken();
+					tokenizer = new StringTokenizer(s);
+					token = tokenizer.nextToken();
 
-						//System.out.println(token);
-						
-						if (token.equals(GGASentence.HEADER)){
-							parseGGA(s);
-						}else if (token.equals(RMCSentence.HEADER)){
-							//parseRMC(s);
-						}else if (token.equals(VTGSentence.HEADER)){
-							//parseVTG(s);
-						}else if (token.equals(GSVSentence.HEADER)){
-							//parseGSV(s);
-						}else if (token.equals(GSASentence.HEADER)){
-							//parseGSA(s);
-						}
-						
-					//}
+					//System.out.println(token);
+										
+					parseNMEASentences(token, s);
+					
 					//System.out.println(s);
+					
+				}catch(NoSuchElementException e){
+					//System.out.println("GPS: NoSuchElementException");				
 				}catch(StringIndexOutOfBoundsException e){
-					System.out.println("StringIndexOutOfBoundsException");
-				}catch(ArrayIndexOutOfBoundsException e2){
-					System.out.println("ArrayIndexOutOfBoundsException");
-				}catch(NullPointerException e4){
-					System.out.println("NullPointerException");
-				//}
-				//catch(Exception e3){
-				//	System.out.println("Exception");
+					//System.out.println("GPS: StringIndexOutOfBoundsException");
+				}catch(ArrayIndexOutOfBoundsException e){
+					//System.out.println("GPS: ArrayIndexOutOfBoundsException");
+				}catch(Exception e){
+					System.out.println("GPS: Exception");
 				}finally{
 					//Reset
 					token = "";
@@ -388,12 +389,23 @@ public class GPS extends Thread {
 				}
 			}
 		}
-		
-		//Experimental
-		//LCD.drawString("END",0,7);
-		//LCD.refresh();
 	}
 
+	private void parseNMEASentences(String header,String NMEASentence){
+		
+		if (header.equals(GGASentence.HEADER)){
+			parseGGA(NMEASentence);
+		}else if (header.equals(RMCSentence.HEADER)){
+			parseRMC(NMEASentence);
+		}else if (header.equals(VTGSentence.HEADER)){
+			parseVTG(NMEASentence);
+		}else if (header.equals(GSVSentence.HEADER)){
+			parseGSV(NMEASentence);
+		}else if (header.equals(GSASentence.HEADER)){
+			parseGSA(NMEASentence);
+		}
+	}
+	
 	
 	/**
 	 * Pulls the next NMEA sentence as a string
@@ -465,7 +477,10 @@ public class GPS extends Thread {
 		ggaSentence.parse();
 		
 		this.RAWtime = ggaSentence.getTime();
-		updateTime();
+		
+		if(this.RAWtime != 0){
+			updateTime();
+		}
 
 		this.latitude = ggaSentence.getLatitude();
 		this.latitudeDirection = ggaSentence.getLatitudeDirection();
@@ -515,11 +530,14 @@ public class GPS extends Thread {
 		
 		//Charles Manning notes
 		//Is better use VTG instead of RMC
+		this.status = rmcSentence.getStatus();
 		//this.speed = rmcSentence.getSpeed();
 		this.RAWdate = rmcSentence.getDate();
 		this.compassDegrees = rmcSentence.getCompassDegrees();
 		
-		updateDate();
+		if(this.RAWdate != 0){
+			updateDate();
+		}
 
 		//Events
 		fireRMCSentenceReceived(rmcSentence);
@@ -560,6 +578,8 @@ public class GPS extends Thread {
 		
 		this.speed = vtgSentence.getSpeed();
 
+		System.out.println("PARSED");
+		
 		//Events
 		fireVTGSentenceReceived (vtgSentence);
 	}
@@ -572,12 +592,12 @@ public class GPS extends Thread {
 	private void parseGSV(String nmeaSentence){
 		gsvSentence.setSentence(nmeaSentence);
 		gsvSentence.parse();
-
+/*
 		this.ns[0] = gsvSentence.getSatellite(0);
 		this.ns[1] = gsvSentence.getSatellite(1);
 		this.ns[2] = gsvSentence.getSatellite(2);
 		this.ns[3] = gsvSentence.getSatellite(3);
-
+*/
 		//Events
 		fireGSVSentenceReceived(gsvSentence);
 	}
@@ -597,7 +617,7 @@ public class GPS extends Thread {
 		PDOP = gsaSentence.getPDOP();
 		HDOP = gsaSentence.getHDOP();
 		VDOP = gsaSentence.getVDOP();
-
+		
 		//Events
 		fireGSASentenceReceived(gsaSentence);
 	}
