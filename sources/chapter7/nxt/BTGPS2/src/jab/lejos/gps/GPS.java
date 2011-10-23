@@ -58,7 +58,7 @@ public class GPS extends Thread {
 	private float compassDegrees  = 0f;
 	
 	//GSV
-	private NMEASatellite[] ns;
+	private Satellite[] ns;
 	
 	//GSA
 	private String mode = "";
@@ -100,11 +100,11 @@ public class GPS extends Thread {
 		rmcSentence = new RMCSentence();
 		vtgSentence = new VTGSentence();
 		gsvSentence = new GSVSentence();
-		ns = new NMEASatellite[4];
-		ns[0] = new NMEASatellite();
-		ns[1] = new NMEASatellite();
-		ns[2] = new NMEASatellite();
-		ns[3] = new NMEASatellite();
+		ns = new Satellite[4];
+		ns[0] = new Satellite();
+		ns[1] = new Satellite();
+		ns[2] = new Satellite();
+		ns[3] = new Satellite();
 		gsaSentence = new GSASentence();
 		SV = new int[12];
 		
@@ -239,7 +239,7 @@ public class GPS extends Thread {
 	 * @param index
 	 * @return
 	 */
-	public NMEASatellite getSatellite(int index){
+	public Satellite getSatellite(int index){
 		return ns[index];
 	}
 	

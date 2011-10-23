@@ -31,10 +31,10 @@ public class GSVSentence extends NMEASentence{
 	private String nmeaHeader = "";
 	private int satellitesTracked = 0;
 	private final int MAXIMUMSATELLITES = 4;
-	private NMEASatellite ns1;
-	private NMEASatellite ns2;
-	private NMEASatellite ns3;
-	private NMEASatellite ns4;
+	private Satellite ns1;
+	private Satellite ns2;
+	private Satellite ns3;
+	private Satellite ns4;
 	
 	//Header
 	public static final String HEADER = "$GPGSV";
@@ -46,10 +46,10 @@ public class GSVSentence extends NMEASentence{
 	 * Constructor
 	 */
 	public GSVSentence(){
-		ns1 = new NMEASatellite();
-		ns2 = new NMEASatellite();
-		ns3 = new NMEASatellite();
-		ns4 = new NMEASatellite();
+		ns1 = new Satellite();
+		ns2 = new Satellite();
+		ns3 = new Satellite();
+		ns4 = new Satellite();
 	}
 	
 	
@@ -74,8 +74,8 @@ public class GSVSentence extends NMEASentence{
 	 * @param index
 	 * @return
 	 */
-	public NMEASatellite getSatellite(int index){
-		NMEASatellite ns = new NMEASatellite();
+	public Satellite getSatellite(int index){
+		Satellite ns = new Satellite();
 		if(index == 0){
 			ns = ns1;
 		}else if(index == 1){
@@ -165,7 +165,7 @@ public class GSVSentence extends NMEASentence{
 				ns1.setPRN(PRN);
 				ns1.setElevation(elevation);
 				ns1.setAzimuth(azimuth);
-				ns1.setSNR(SNR);
+				ns1.setSignalNoiseRatio(SNR);
 				
 				//SAT 2
 				
@@ -196,7 +196,7 @@ public class GSVSentence extends NMEASentence{
 				ns2.setPRN(PRN);
 				ns2.setElevation(elevation);
 				ns2.setAzimuth(azimuth);
-				ns2.setSNR(SNR);
+				ns1.setSignalNoiseRatio(SNR);
 				
 				//SAT 3
 
@@ -227,7 +227,7 @@ public class GSVSentence extends NMEASentence{
 				ns3.setPRN(PRN);
 				ns3.setElevation(elevation);
 				ns3.setAzimuth(azimuth);
-				ns3.setSNR(SNR);
+				ns1.setSignalNoiseRatio(SNR);
 				
 				// SAT 4
 
@@ -258,7 +258,7 @@ public class GSVSentence extends NMEASentence{
 				ns4.setPRN(PRN);
 				ns4.setElevation(elevation);
 				ns4.setAzimuth(azimuth);
-				ns4.setSNR(SNR);				
+				ns1.setSignalNoiseRatio(SNR);				
 				
 			}
 			
