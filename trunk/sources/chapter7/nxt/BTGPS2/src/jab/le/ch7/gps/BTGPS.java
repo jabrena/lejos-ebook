@@ -8,7 +8,7 @@ import lejos.util.TextMenu;
 
 import jab.lejos.gps.Date;
 import jab.lejos.gps.GPS;
-import jab.lejos.gps.NMEASatellite;
+import jab.lejos.gps.Satellite;
 
 //import java.util.*;
 import java.io.*;
@@ -355,10 +355,10 @@ public class BTGPS{
 		LCD.drawString("Sat table", 0, 2);
 		
 		
-		NMEASatellite ns1 = gps.getSatellite(0);
-		NMEASatellite ns2 = gps.getSatellite(1);
-		NMEASatellite ns3 = gps.getSatellite(2);
-		NMEASatellite ns4 = gps.getSatellite(3);
+		Satellite ns1 = gps.getSatellite(0);
+		Satellite ns2 = gps.getSatellite(1);
+		Satellite ns3 = gps.getSatellite(2);
+		Satellite ns4 = gps.getSatellite(3);
 		
 		LCD.drawString(" PRN Ele Azi SRN",0,3);
 		LCD.drawString("1 " + ns1.getPRN(),0,4);
