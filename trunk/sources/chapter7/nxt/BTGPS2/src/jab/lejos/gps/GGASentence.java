@@ -212,9 +212,9 @@ public class GGASentence extends NMEASentence{
 			}
 			
 		}catch(NoSuchElementException e){
-			System.err.println("GGASentence: NoSuchElementException");
+			//System.err.println("GGASentence: NoSuchElementException");
 		}catch(NumberFormatException e){
-			System.err.println("GGASentence: NumberFormatException");
+			//System.err.println("GGASentence: NumberFormatException");
 		}catch(Exception e){
 			System.err.println("GGASentence: Exception");
 		}
