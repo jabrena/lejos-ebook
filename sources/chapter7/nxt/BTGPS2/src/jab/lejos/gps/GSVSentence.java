@@ -1,5 +1,8 @@
 package jab.lejos.gps;
 
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+
 /**
  * This class has been designed to manage a GSV Sentence
  * 
@@ -57,6 +60,13 @@ public class GSVSentence extends NMEASentence{
 	 * GETTERS & SETTERS
 	 */
 
+	/**
+	 * Returns the NMEA header for this sentence.
+	 */
+	@Override
+	public String getHeader() {
+		return HEADER;
+	}
 	
 	/**
 	 * Returns the number of satellites being tracked to

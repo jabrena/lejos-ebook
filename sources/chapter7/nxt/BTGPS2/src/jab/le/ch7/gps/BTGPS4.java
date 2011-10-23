@@ -1,7 +1,7 @@
 package jab.le.ch7.gps;
 
 import jab.lejos.gps.GPS;
-import jab.lejos.gps.Date;
+//import jab.lejos.gps.Date;
 
 //import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +31,7 @@ public class BTGPS4 {
 	private static final byte[] pin = {(byte) '0', (byte) '0', (byte) '0', (byte) '0'};
 
 	//GPS Data
-	private static Date now;
+	private static java.util.Date now;
 	
 	private static long tics = 0;
 	

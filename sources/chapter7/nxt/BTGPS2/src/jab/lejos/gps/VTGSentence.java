@@ -1,5 +1,8 @@
 package jab.lejos.gps;
 
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+
 //import java.util.*;
 
 /**
@@ -32,6 +35,8 @@ public class VTGSentence extends NMEASentence{
 	private String nmeaHeader = "";
 	private final float KNOT = 1.852f;
 	private float speed = 0f;
+	private float trueCourse = 0f;
+	private float magneticCourse = 0f;
 
 	//Header
 	public static final String HEADER = "$GPVTG";
@@ -39,7 +44,23 @@ public class VTGSentence extends NMEASentence{
 	//NMEA parts
 	private String part1,part2,part3,part4,part5,part6,part7,part8,part9 = "";
 
-
+	/**
+	 * Returns the NMEA header for this sentence.
+	 */
+	@Override
+	public String getHeader() {
+		return HEADER;
+	}
+	
+	/**
+	 * Get true course, in degrees.
+	 * 
+	 * @return the true course in degrees 0.0 to 360.0
+	 */
+	public float getTrueCourse(){
+		return trueCourse;
+	}
+	
 	/**
 	 * Get Speed in Kilometers
 	 * 
