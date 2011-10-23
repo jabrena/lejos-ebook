@@ -1,5 +1,8 @@
 package jab.lejos.gps;
 
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+
 /**
  * This class has been designed to manage a GSA Sentence
  * 
@@ -42,12 +45,19 @@ public class GSASentence extends NMEASentence{
 	private String part1,part2,part3,part4,part5,part6,part7,part8,part9,part10,part11,part12,part13,part14,part15,part16,part17 = "";
 	private String part = "";
 	
-	
 	/**
 	 * Constructor
 	 */
 	public GSASentence(){
 		SV = new int[MAXIMUMSV];
+	}
+	
+	/**
+	 * Returns the NMEA header for this sentence.
+	 */
+	@Override
+	public String getHeader() {
+		return HEADER;
 	}
 
 	/**
@@ -80,7 +90,7 @@ public class GSASentence extends NMEASentence{
 	 * 
 	 * @return
 	 */
-	public int[] getSV(){
+	public int[] getPRN(){
 		return SV;
 	}
 

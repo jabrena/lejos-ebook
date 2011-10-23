@@ -2,6 +2,9 @@ package jab.lejos.gps;
 //package lejos.gps;
 
 import java.io.*;
+import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 import java.util.Vector;
 //import java.util.*;
 
@@ -41,9 +44,9 @@ public class GPS extends Thread {
 	//GGA
 	private int RAWtime = 0;
 	private float latitude;
-	private String latitudeDirection = "";
+	private char latitudeDirection;
 	private float longitude;
-	private String longitudeDirection = "";
+	private char longitudeDirection;
 	private float altitude = 0;
 	private int satellitesTracked = 0;
 	static final int MINIMUN_SATELLITES_TO_WORK = 4;
@@ -63,7 +66,7 @@ public class GPS extends Thread {
 	//GSA
 	private String mode = "";
 	private int modeValue = 0;
-	private int[] SV;
+	private int[] PRN;
 	private float PDOP = 0;
 	private float HDOP = 0;
 	private float VDOP = 0;
@@ -88,7 +91,7 @@ public class GPS extends Thread {
 	private StringTokenizer tokenizer;
 	
 	// Use Vector to keep compatibility with J2ME
-	private Vector listeners = new Vector();
+	private static Vector listeners = new Vector();
 
 	/**
 	 * The constructor. It needs an InputStream
@@ -96,6 +99,8 @@ public class GPS extends Thread {
 	 * @param in An input stream from the GPS receiver
 	 */
 	public GPS(InputStream in) {
+		this.in = in;
+		
 		ggaSentence = new GGASentence();
 		rmcSentence = new RMCSentence();
 		vtgSentence = new VTGSentence();
@@ -106,11 +111,11 @@ public class GPS extends Thread {
 		ns[2] = new Satellite();
 		ns[3] = new Satellite();
 		gsaSentence = new GSASentence();
-		SV = new int[12];
+		PRN = new int[12];
 		
 		date = new Date();
 		
-		this.in = in;
+
 		this.setDaemon(true); // Must be set before thread starts
 		this.start();
 	}
@@ -142,7 +147,7 @@ public class GPS extends Thread {
 	 * 
 	 * @return
 	 */
-	public String getLatitudeDirection(){
+	public char getLatitudeDirection(){
 		return latitudeDirection;
 	}
 
@@ -161,7 +166,7 @@ public class GPS extends Thread {
 	 * 
 	 * @return
 	 */
-	public String getLongitudeDirection(){
+	public char getLongitudeDirection(){
 		return longitudeDirection;
 	}
 
@@ -266,8 +271,8 @@ public class GPS extends Thread {
 	 * 
 	 * @return
 	 */
-	public int[] getSV(){
-		return SV;
+	public int[] getPRN(){
+		return PRN;
 	}
 	
 	/**
@@ -370,7 +375,7 @@ public class GPS extends Thread {
 
 					//System.out.println(token);
 										
-					parseNMEASentences(token, s);
+					sentenceChooser(token, s);
 					
 					//System.out.println(s);
 					
@@ -391,7 +396,7 @@ public class GPS extends Thread {
 		}
 	}
 
-	private void parseNMEASentences(String header,String NMEASentence){
+	private void sentenceChooser(String header,String NMEASentence){
 		
 		if (header.equals(GGASentence.HEADER)){
 			parseGGA(NMEASentence);
@@ -488,10 +493,10 @@ public class GPS extends Thread {
 		this.longitudeDirection = ggaSentence.getLongitudeDirection();
 		this.satellitesTracked = ggaSentence.getSatellitesTracked();
 		this.altitude = ggaSentence.getAltitude();
-		this.quality = ggaSentence.getQuality();
+		this.quality = ggaSentence.getFixQuality();
 
 		//Events
-		fireGGASentenceReceived(ggaSentence);
+		//fireGGASentenceReceived(ggaSentence);
 	}
 
 	/**
@@ -540,7 +545,7 @@ public class GPS extends Thread {
 		}
 
 		//Events
-		fireRMCSentenceReceived(rmcSentence);
+		//fireRMCSentenceReceived(rmcSentence);
 	}
 
 	/**
@@ -581,7 +586,7 @@ public class GPS extends Thread {
 		System.out.println("PARSED");
 		
 		//Events
-		fireVTGSentenceReceived (vtgSentence);
+		//fireVTGSentenceReceived (vtgSentence);
 	}
 
 	/**
@@ -599,7 +604,7 @@ public class GPS extends Thread {
 		this.ns[3] = gsvSentence.getSatellite(3);
 */
 		//Events
-		fireGSVSentenceReceived(gsvSentence);
+		//fireGSVSentenceReceived(gsvSentence);
 	}
 
 	/**
@@ -613,13 +618,13 @@ public class GPS extends Thread {
 		
 		mode = gsaSentence.getMode();
 		modeValue = gsaSentence.getModeValue();
-		SV = gsaSentence.getSV();
+		PRN = gsaSentence.getPRN();
 		PDOP = gsaSentence.getPDOP();
 		HDOP = gsaSentence.getHDOP();
 		VDOP = gsaSentence.getVDOP();
 		
 		//Events
-		fireGSASentenceReceived(gsaSentence);
+		//fireGSASentenceReceived(gsaSentence);
 	}
 
 	/* EVENTS*/
@@ -629,7 +634,7 @@ public class GPS extends Thread {
 	 * 
 	 * @param listener
 	 */
-	public void addListener (GPSListener listener){
+	public static void addListener (GPSListener listener){
 		listeners.addElement(listener); 
 	}
 
@@ -648,6 +653,7 @@ public class GPS extends Thread {
 	 * 
 	 * @param ggaSentence
 	 */
+	/*
 	private void fireGGASentenceReceived (GGASentence ggaSentence){
 		GPSListener GPSL;
 		for(int i=0; i<listeners.size();i++){
@@ -659,12 +665,13 @@ public class GPS extends Thread {
 			}
 		}
 	}
-
+*/
 	/**
 	 * Method which is used when system parse a RMC Sentence
 	 * 
 	 * @param rmcSentence
 	 */
+/*
 	private void fireRMCSentenceReceived (RMCSentence rmcSentence){
 		GPSListener GPSL;
 		for(int i=0; i<listeners.size();i++){
@@ -676,12 +683,13 @@ public class GPS extends Thread {
 			}
 		}
 	}
-
+*/
 	/**
 	 * Method which is used when system parse a VTG Sentence
 	 * 
 	 * @param VTGSentence
 	 */
+/*
 	private void fireVTGSentenceReceived (VTGSentence vtgSentence){
 		GPSListener GPSL;
 		for(int i=0; i<listeners.size();i++){
@@ -693,12 +701,14 @@ public class GPS extends Thread {
 			}
 		}
 	}
-
+*/
+	
 	/**
 	 * Method which is used when system parse a GSV Sentence
 	 * 
 	 * @param GSVSentence
 	 */
+/*
 	private void fireGSVSentenceReceived (GSVSentence gsvSentence){
 		GPSListener GPSL;
 		for(int i=0; i<listeners.size();i++){
@@ -710,12 +720,13 @@ public class GPS extends Thread {
 			}
 		}
 	}
-
+*/
 	/**
 	 * Method which is used when system parse a GSV Sentence
 	 * 
 	 * @param GSVSentence
 	 */
+/*
 	private void fireGSASentenceReceived (GSASentence gsaSentence){
 		GPSListener GPSL;
 		for(int i=0; i<listeners.size();i++){
@@ -727,4 +738,5 @@ public class GPS extends Thread {
 			}
 		}
 	}
+	*/
 }

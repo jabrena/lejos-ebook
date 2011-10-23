@@ -1,4 +1,7 @@
 package jab.lejos.gps;
+
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 //package lejos.gps;
 
 //import java.util.*;
@@ -56,6 +59,14 @@ public class RMCSentence extends NMEASentence{
 	/*
 	 * GETTERS & SETTERS
 	 */
+	
+	/**
+	 * Returns the NMEA header for this sentence.
+	 */
+	@Override
+	public String getHeader() {
+		return HEADER;
+	}
 	
 	public String getStatus(){
 		return status;

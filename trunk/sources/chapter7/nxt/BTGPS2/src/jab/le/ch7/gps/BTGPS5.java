@@ -9,6 +9,7 @@ import lejos.util.TextMenu;
 //import jab.lejos.gps.Date;
 import jab.lejos.gps.GPS;
 import jab.lejos.gps.Satellite;
+import jab.lejos.gps.SimpleGPS;
 
 //import java.util.*;
 import java.io.*;
@@ -38,7 +39,7 @@ import javax.microedition.location.*;
  * @author BB
  * @author Juan Antonio Brenha Moral
  */
-public class BTGPS{
+public class BTGPS5{
 	private static String appName = "GPS";
 	private static String appVersion = "v7.0";
 
@@ -47,7 +48,7 @@ public class BTGPS{
 
 	//Bluetooth
 	private static RemoteDevice GPSDevice = null;
-	private static GPS gps = null;
+	private static SimpleGPS gps = null;
 	private static InputStream in = null;
 
 	//GPS Pin
@@ -59,6 +60,10 @@ public class BTGPS{
 	//private static Satellite ns;
 	private static Coordinates origin;
 	private static Coordinates current;
+	
+	private static long tics = 0;
+	
+	private static int miliseconds = 2000;
 
 	public static void main(String[] args) {
 
@@ -170,8 +175,8 @@ public class BTGPS{
 
 		try{
 			in = btGPS.openInputStream();
-			gps = new GPS(in);
-			gps.updateValues(true);
+			gps = new SimpleGPS(in);
+			//gps.updateValues(true);
 
 			result = 2;//
 		}catch(Exception e) {
@@ -181,10 +186,30 @@ public class BTGPS{
 		return result;
 	}
 
+	
+	private static void showData(){
+		
+		LCD.clear();
+		
+		while(!Button.ESCAPE.isDown()){
+						
+			tics++;
+
+			System.out.println("ITERATION: " + tics);
+			
+			//showGGAUI();
+			
+			try {Thread.sleep(miliseconds);} catch (Exception e) {}
+			
+		}
+		
+		//gps.shutDown();
+	}
+	
 	/**
 	 * Show the example GUI
 	 */
-	static void showData(){
+	static void showData2(){
 		LCD.clear();
 		//int sentenceCount = 0;
 		
@@ -225,15 +250,18 @@ public class BTGPS{
 			}
 			
 			if(!firstMomentFlag){
+				/*
 				Date tempDate = gps.getDate();
 				int hours = tempDate.getHours();
 				int minutes = tempDate.getMinutes();
 				int seconds = tempDate.getSeconds();
+				*/
 				connectionMoment = new Date();
-				connectionMoment.setHours(hours);
-				connectionMoment.setMinutes(minutes);
-				connectionMoment.setSeconds(seconds);
+				connectionMoment.setHours(22);
+				connectionMoment.setMinutes(30);
+				connectionMoment.setSeconds(30);
 				
+				int seconds = 10;
 				
 				origin = new Coordinates(gps.getLatitude(),gps.getLongitude(),gps.getAltitude());
 				
@@ -246,8 +274,8 @@ public class BTGPS{
 				}
 			}
 			
-			now = gps.getDate();
-			current = new Coordinates(gps.getLatitude(),gps.getLongitude(),gps.getAltitude());
+			//now = gps.getDate();
+			//current = new Coordinates(gps.getLatitude(),gps.getLongitude(),gps.getAltitude());
 
 			
 			//Circular System
@@ -305,14 +333,14 @@ public class BTGPS{
 		refreshSomeLCDLines();
 		LCD.drawString("GGA", 0, 2);
 
-		LCD.drawString("Tim " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "", 0, 3);
+		//LCD.drawString("Tim " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "", 0, 3);
 		LCD.drawString("Lat " + gps.getLatitude(), 0, 4);
 		LCD.drawString("" + gps.getLatitudeDirection() , 15, 4);
 		LCD.drawString("Lon " + gps.getLongitude(), 0, 5);
 		LCD.drawString("" + gps.getLongitudeDirection() , 15, 5);
 		LCD.drawString("Alt " + gps.getAltitude(), 0, 6);
 		LCD.drawString("Sat " + gps.getSatellitesTracked(), 0, 7);
-		//LCD.drawString("QOS " + gps.getFixMode(), 6, 7);
+		LCD.drawString("QOS " + gps.getFixMode(), 6, 7);
 		LCD.refresh();
 	}
 
@@ -324,7 +352,7 @@ public class BTGPS{
 		LCD.drawString("RMC", 0, 2);
 		
 		LCD.drawString("Dat " + now.getDay() + "/" + now.getMonth() + "/" + now.getYear() + "", 0, 3);
-		LCD.drawString("Com " + gps.getCompassDegrees(), 0, 4);
+		//LCD.drawString("Com " + gps.getCompassDegrees(), 0, 4);
 		LCD.refresh();
 	}
 
@@ -355,7 +383,7 @@ public class BTGPS{
 		refreshSomeLCDLines();
 		LCD.drawString("Sat table", 0, 2);
 		
-		
+		/*
 		Satellite ns1 = gps.getSatellite(0);
 		Satellite ns2 = gps.getSatellite(1);
 		Satellite ns3 = gps.getSatellite(2);
@@ -378,6 +406,7 @@ public class BTGPS{
 		//LCD.drawString("" + ns2.getSignalNoiseRatio(),13,5);
 		//LCD.drawString("" + ns3.getSignalNoiseRatio(),13,6);
 		//LCD.drawString("" + ns4.getSignalNoiseRatio(),13,7);
+		*/
 		LCD.refresh();
 	}
 
@@ -436,7 +465,7 @@ public class BTGPS{
 
 		LCD.drawString("Dis " + Math.round((float)origin.distance(current)), 0, 5);
 		LCD.drawString("Azi " + Math.round((float)origin.azimuthTo(current)), 0, 6);
-		LCD.drawString("Com " + gps.getCompassDegrees(), 0, 7);
+		//LCD.drawString("Com " + gps.getCompassDegrees(), 0, 7);
 		LCD.drawString("N", 8, 6);
 		LCD.drawString("N", 8, 7);
 		LCD.refresh();

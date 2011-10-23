@@ -1,4 +1,6 @@
 package jab.lejos.gps;
+
+import java.util.StringTokenizer;
 //package lejos.gps;
 
 //import java.util.*;
@@ -13,7 +15,7 @@ package jab.lejos.gps;
  * @author BB
  *
  */
-public class NMEASentence {
+abstract public class NMEASentence {
 
 	static protected String nmeaSentence = "";
 	protected StringTokenizer st;
@@ -21,8 +23,6 @@ public class NMEASentence {
 	public static final int LATITUDE = 0;
 	public static final int LONGITUDE = 1;
 
-	/* GETTERS & SETTERS */
-	
 	/**
 	 * Set a new NMEA sentence into the object
 	 * 
@@ -32,6 +32,72 @@ public class NMEASentence {
 		nmeaSentence = sentence;
 	}
 
+	/**
+	 *  Retrieve the header constant for this sentence.
+	 *  @return The NMEA header string ($GPGGA, $GPVTG, etc...)   
+	 */
+	// TODO: Maybe getSentenceType()?
+	// TODO: Should it return the $ too, or maybe have a list of constants?
+	abstract public String getHeader();
+	
+	/**
+	 * Return if your NMEA Sentence is valid or not
+	 *
+	 * @param sentence the NMEA sentence
+	 * @return true iff the NMEA Sentence is true
+	 */
+	public static boolean isValid(String sentence){
+		int end = sentence.indexOf('*');
+		String checksumStr = sentence.substring(end + 1, end + 3);
+		byte checksumByte = convertChecksum(checksumStr);
+		return(checksumByte == calcChecksum(sentence));
+	}
+	
+	/**
+	 * Method designed to calculate a checksum using data
+	 * 
+	 * @return
+	 */
+	private static byte calcChecksum(String sentence) {
+		int start = sentence.indexOf('$');
+		int end = sentence.indexOf('*');
+		if(end < 0) {
+			end = sentence.length();
+		}
+		byte checksum = (byte) sentence.charAt(start + 1);
+		for (int index = start + 2; index < end; ++index) {
+			checksum ^= (byte) sentence.charAt(index);
+		}
+		return checksum;
+	}
+
+	/**
+	 * Method used to create a checksum with String
+	 * 
+	 * @param checksum_string
+	 * @return
+	 */
+	private static byte convertChecksum(String checksum_string) {
+		byte checksum;
+		checksum = (byte)((hexCharToByte(checksum_string.charAt(0)) & 0xF ) << 4 );
+		checksum = (byte)(checksum | hexCharToByte(checksum_string.charAt(1)) & 0xF );
+		return checksum;
+	}
+	
+	/**
+	 * NOTE: This functionality can be replaced by Byte.parseByte()
+	 * if we ever make a Byte class.
+	 * @param hex_char
+	 * @return
+	 */
+	// TODO: I think we can use Integer.parseInt() and use optional 16 base conversion.
+	private static byte hexCharToByte(char hex_char) {
+	  if( hex_char > 57 )
+		  return((byte)(hex_char - 55));
+	  else
+		  return((byte)(hex_char - 48));
+	}
+	
 	/**
 	 * Any GPS Receiver gives Lat/Lon data in the following way:
 	 * 

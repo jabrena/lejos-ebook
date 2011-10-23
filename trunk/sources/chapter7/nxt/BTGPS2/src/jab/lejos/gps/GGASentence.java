@@ -1,5 +1,9 @@
 package jab.lejos.gps;
 
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 /**
  * This class has been designed to manage a GGA Sentence
  * 
@@ -39,9 +43,9 @@ public class GGASentence extends NMEASentence{
 	private String nmeaHeader = "";
 	private int dateTimeOfFix = 0;
 	private float latitude = 0;
-	private String latitudeDirection = "";
+	private char latitudeDirection;
 	private float longitude = 0;
-	private String longitudeDirection = "";
+	private char longitudeDirection;
 	private int quality = 0;
 	private int satellitesTracked = 0;
 	private float hdop = 0;
@@ -59,6 +63,14 @@ public class GGASentence extends NMEASentence{
 	/*
 	 * GETTERS & SETTERS
 	 */
+	
+	/**
+	 * Returns the NMEA header for this sentence.
+	 */
+	@Override
+	public String getHeader() {
+		return HEADER;
+	}
 
 	/**
 	 * Get Latitude
@@ -73,7 +85,7 @@ public class GGASentence extends NMEASentence{
 	 * 
 	 * @return
 	 */
-	public String getLatitudeDirection(){
+	public char getLatitudeDirection(){
 		return latitudeDirection;
 	}
 	
@@ -89,7 +101,7 @@ public class GGASentence extends NMEASentence{
 	 * Get Longitude Direction
 	 * @return
 	 */
-	public String getLongitudeDirection(){
+	public char getLongitudeDirection(){
 		return longitudeDirection;
 	}
 	
@@ -124,9 +136,9 @@ public class GGASentence extends NMEASentence{
 	/**
 	 * Get GPS Quality Data
 	 * 
-	 * @return
+	 * @return the fix quality
 	 */
-	public int getQuality(){
+	public int getFixQuality(){
 		return quality;
 	}
 
@@ -170,7 +182,7 @@ public class GGASentence extends NMEASentence{
 				latitude = 0f;
 			}
 			
-			latitudeDirection = part4;
+			latitudeDirection = part4.charAt(0);
 			
 			if(isNumeric(part5)){
 				longitude = degreesMinToDegrees(part5,NMEASentence.LONGITUDE);
@@ -178,12 +190,12 @@ public class GGASentence extends NMEASentence{
 				longitude = 0f;
 			}
 
-			longitudeDirection = part6;
+			longitudeDirection = part6.charAt(0);
 			
-			if (longitudeDirection.equals("E") == false) {
+			if (longitudeDirection != 'E') {
 				longitude = -longitude;
 			}
-			if (latitudeDirection.equals("N") == false) {
+			if (latitudeDirection != 'N') {
 				latitude = -latitude;
 			}
 
