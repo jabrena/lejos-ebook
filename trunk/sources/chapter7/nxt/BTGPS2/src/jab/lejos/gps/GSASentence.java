@@ -1,6 +1,4 @@
 package jab.lejos.gps;
-//package lejos.gps;
-import java.util.*;
 
 /**
  * This class has been designed to manage a GSA Sentence
@@ -31,26 +29,26 @@ public class GSASentence extends NMEASentence{
 	private String nmeaHeader = "";
 	private String mode = "";
 	private int modeValue = 0;
-	private final int maximumSV = 12;
+	private final int MAXIMUMSV = 12;
 	private int[] SV;
-	private float PDOP = 0;
-	private float HDOP = 0;
-	private float VDOP = 0;
+	private float PDOP = 0f;
+	private float HDOP = 0f;
+	private float VDOP = 0f;
 
 	//Header
 	public static final String HEADER = "$GPGSA";
 	
-	/*
+	//NMEA parts
+	private String part1,part2,part3,part4,part5,part6,part7,part8,part9,part10,part11,part12,part13,part14,part15,part16,part17 = "";
+	private String part = "";
+	
+	
+	/**
 	 * Constructor
 	 */
-
 	public GSASentence(){
-		SV = new int[maximumSV];
+		SV = new int[MAXIMUMSV];
 	}
-
-	/*
-	 * GETTERS & SETTERS
-	 */
 
 	/**
 	 * Return Mode1.
@@ -117,36 +115,83 @@ public class GSASentence extends NMEASentence{
 	 * Method used to parse a GGA Sentence
 	 */
 	public void parse(){
-		//StringTokenizer st = new StringTokenizer(nmeaSentence,",");
 		st = new StringTokenizer(nmeaSentence,",");
-		String sv = "";
 
 		try{
-			nmeaHeader = st.nextToken();//Global Positioning System Fix Data
-			mode = st.nextToken();
-			modeValue = Integer.parseInt(st.nextToken());
+			
+			//Extracting data from a GSA Sentence
+			
+			part1 = st.nextToken();//NMEA header
+			part2 = st.nextToken();//mode
+			/*
+			part3 = st.nextToken();//sv1
+			part4 = st.nextToken();//sv2
+			part5 = st.nextToken();//sv3
+			part6 = st.nextToken();//sv4
+			part7 = st.nextToken();//sv5
+			part8 = st.nextToken();//sv6
+			part9 = st.nextToken();//sv7
+			part10 = st.nextToken();//sv8
+			part11 = st.nextToken();//sv9
+			part12 = st.nextToken();//sv10
+			part13 = st.nextToken();//sv11
+			part14 = st.nextToken();//sv12
+			*/
+			
+			//Processing GSA data
+			
+			nmeaHeader = part1;
+			mode = part2;
+			
+			if(part3 == null){
+				modeValue = 0;
+			}else{
+				if(part3.length() == 0){
+					modeValue = 0;
+				}else{
+					modeValue = Math.round(Float.parseFloat(part3));
+				}
+			}
 
 			for(int i=0;i<=11;i++){
-				sv = st.nextToken();
-				if(sv.length() > 0){
-					SV[i] = Integer.parseInt(sv);
+				part = st.nextToken();
+				if(part.length() > 0){
+					SV[i] = Integer.parseInt(part);
 				}else{
 					SV[i] = 0;
 				}
 			}
-
-			PDOP = Float.parseFloat(st.nextToken());
-			HDOP = Float.parseFloat(st.nextToken());
-			VDOP = Float.parseFloat(st.nextToken());
-
-			System.out.println("PARSED");		
 			
+			part15 = st.nextToken();//PDOP
+			part16 = st.nextToken();//HDOP
+			part17 = st.nextToken();//VDOP
+			
+			st = null;
+			
+			if(part15.length() == 0){
+				PDOP = 0;
+			}else{
+				PDOP = Float.parseFloat(part15);
+			}
+
+			if(part16.length() == 0){
+				HDOP = 0;
+			}else{
+				HDOP = Float.parseFloat(part16);
+			}
+			
+			if(part17.length() == 0){
+				VDOP = 0;
+			}else{
+				VDOP = Float.parseFloat(part17);
+			}
+
 		}catch(NoSuchElementException e){
-			//Empty
-			System.out.println("NoSuchElementException");
+			//System.err.println("GSASentence: NoSuchElementException");
 		}catch(NumberFormatException e){
-			//Empty
-			System.out.println("NumberFormatException");
+			//System.err.println("GSASentence: NumberFormatException");
+		}catch(Exception e){
+			System.err.println("GSASentence: Exception");
 		}
 
 	}//End parse

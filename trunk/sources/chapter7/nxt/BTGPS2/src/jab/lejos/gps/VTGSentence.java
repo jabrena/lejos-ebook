@@ -24,19 +24,21 @@ package jab.lejos.gps;
  *                         E=Estimated, N=Data not valid)
  * 
  * @author Juan Antonio Brenha Moral
+ * 
  */
 public class VTGSentence extends NMEASentence{
 
 	//RMC Sentence
 	private String nmeaHeader = "";
-	private float speed = 0;
+	private final float KNOT = 1.852f;
+	private float speed = 0f;
 
 	//Header
 	public static final String HEADER = "$GPVTG";
+	
+	//NMEA parts
+	private String part1,part2,part3,part4,part5,part6,part7,part8,part9 = "";
 
-	/*
-	 * GETTERS & SETTERS
-	 */
 
 	/**
 	 * Get Speed in Kilometers
@@ -56,20 +58,42 @@ public class VTGSentence extends NMEASentence{
 		st = new StringTokenizer(nmeaSentence,",");
 
 		try{
-			nmeaHeader = st.nextToken();//$GPVTG
-			st.nextToken();//True course made good over ground, degrees
-			st.nextToken();//Letter
-			st.nextToken();//Magnetic course made good over ground
-			st.nextToken();//Letter
-			st.nextToken();//Ground speed, N=Knots
-			st.nextToken();//Letter
-			speed = Float.parseFloat((String)st.nextToken());//Ground speed, K=Kilometers per hour
-			//st.nextToken();//Letter
+			
+			//Extracting data from a VTG Sentence
+			
+			part1 = st.nextToken();//NMEA header
+			part2 = st.nextToken();//True course made good over ground, degrees
+			part3 = st.nextToken();//Letter
+			part4 = st.nextToken();//Magnetic course made good over ground
+			part5 = st.nextToken();//Letter
+			part6 = st.nextToken();//Ground speed, N=Knots
+			part7 = st.nextToken();//Letter
+			part8 = st.nextToken();//Speed over the ground in knots
+			part9 = st.nextToken();//Letter
+			
+			st = null;
+			
+			//Processing VTG data
+			
+			nmeaHeader = part1;//$GPVTG
+			
+			if(part8.length() == 0){
+				speed = 0;
+			}else{
+				speed = Float.parseFloat(part8);
+			}
+			
+			System.out.println(speed);
+			
 		}catch(NoSuchElementException e){
-			//Empty
-		}catch(NumberFormatException e2){
-			//Empty
+			//System.err.println("VTGSentence: NoSuchElementException");
+		}catch(NumberFormatException e){
+			//System.err.println("VTGSentence: NumberFormatException");
+		}catch(Exception e){
+			System.err.println("VTGSentence: Exception");
 		}
+		
 	}//End Parse
 
 }//End Class
+

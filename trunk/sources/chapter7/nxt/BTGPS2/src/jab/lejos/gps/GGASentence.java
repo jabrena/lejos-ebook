@@ -1,9 +1,5 @@
 package jab.lejos.gps;
 
-//import android.util.Log;
-
-//import java.util.*;
-
 /**
  * This class has been designed to manage a GGA Sentence
  * 
@@ -216,11 +212,11 @@ public class GGASentence extends NMEASentence{
 			}
 			
 		}catch(NoSuchElementException e){
-			System.err.println("NoSuchElementException");
+			System.err.println("GGASentence: NoSuchElementException");
 		}catch(NumberFormatException e){
-			System.err.println("NumberFormatException");
+			System.err.println("GGASentence: NumberFormatException");
 		}catch(Exception e){
-			System.err.println("Exception");
+			System.err.println("GGASentence: Exception");
 		}
 
 	}//End parse
