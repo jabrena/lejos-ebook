@@ -191,7 +191,7 @@ public class GSASentence extends NMEASentence{
 		}catch(NumberFormatException e){
 			//System.err.println("GSASentence: NumberFormatException");
 		}catch(Exception e){
-			System.err.println("GSASentence: Exception");
+			//System.err.println("GSASentence: Exception");
 		}
 
 	}//End parse

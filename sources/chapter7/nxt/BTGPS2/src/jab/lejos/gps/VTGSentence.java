@@ -90,7 +90,7 @@ public class VTGSentence extends NMEASentence{
 		}catch(NumberFormatException e){
 			//System.err.println("VTGSentence: NumberFormatException");
 		}catch(Exception e){
-			System.err.println("VTGSentence: Exception");
+			//System.err.println("VTGSentence: Exception");
 		}
 		
 	}//End Parse

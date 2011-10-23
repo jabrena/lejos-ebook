@@ -267,7 +267,7 @@ public class GSVSentence extends NMEASentence{
 		}catch(NumberFormatException e){
 			//System.err.println("GSVSentence: NumberFormatException");
 		}catch(Exception e){
-			System.err.println("GSVSentence: Exception");
+			//System.err.println("GSVSentence: Exception");
 		}
 
 	}//End parse
