@@ -99,6 +99,21 @@ public class Magellan {
 		return azimuth;
 	}
 	
+	public long getTimestamp(){
+		
+		long timestamp = 0;
+		
+		try {
+			l = lp.getLocation(-1);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		timestamp = l.getTimestamp();
+		
+		return timestamp;
+	}
+	
 	public double getRelativeHeading(CompassMindSensor compass ){
 		
 		double compassDegrees = 90;
