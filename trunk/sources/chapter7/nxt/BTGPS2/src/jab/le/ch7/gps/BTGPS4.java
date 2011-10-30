@@ -1,9 +1,10 @@
 package jab.le.ch7.gps;
 
-import jab.lejos.gps.GPS;
+import jab.lejos.gps.GPSold;
 //import jab.lejos.gps.Date;
 
 //import java.io.IOException;
+import java.io.IOException;
 import java.io.InputStream;
 //import java.util.Date;
 import java.util.Vector;
@@ -24,7 +25,7 @@ public class BTGPS4 {
 
 	//Bluetooth
 	private static RemoteDevice GPSDevice = null;
-	private static GPS gps = null;
+	private static GPSold gps = null;
 	private static InputStream in = null;
 
 	//GPS Pin
@@ -120,7 +121,7 @@ public class BTGPS4 {
 
 		try{
 			in = btGPS.openInputStream();
-			gps = new GPS(in);
+			gps = new GPSold(in);
 			gps.updateValues(true);
 
 			result = 2;//
@@ -183,7 +184,12 @@ public class BTGPS4 {
 			
 		}
 		
-		gps.shutDown();
+		try {
+			gps.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**

@@ -38,7 +38,7 @@ import javax.microedition.location.*;
  * @author BB
  * @author Juan Antonio Brenha Moral
  */
-public class BTGPS{
+public class TestGPSFull{
 	private static String appName = "GPS";
 	private static String appVersion = "v7.0";
 
@@ -171,7 +171,7 @@ public class BTGPS{
 		try{
 			in = btGPS.openInputStream();
 			gps = new GPS(in);
-			gps.updateValues(true);
+			//gps.updateValues(true);
 
 			result = 2;//
 		}catch(Exception e) {

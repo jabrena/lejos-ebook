@@ -1,13 +1,5 @@
 package jab.le.ch7.gps;
 
-import jab.lejos.gps.GGASentence;
-import jab.lejos.gps.GPS;
-import jab.lejos.gps.GPSListener;
-import jab.lejos.gps.GSASentence;
-import jab.lejos.gps.GSVSentence;
-import jab.lejos.gps.NMEASentence;
-import jab.lejos.gps.Satellite;
-
 import java.io.*;
 import java.util.Date;
 
@@ -16,6 +8,7 @@ import javax.microedition.io.*;
 import javax.microedition.location.*;
 
 //import lejos.addon.gps.*;
+import jab.lejos.gps.*;
 import lejos.nxt.*;
 
 public class GPSInfo implements GPSListener {
@@ -122,7 +115,7 @@ public class GPSInfo implements GPSListener {
 			LCD.drawString("Lat: " + gps.getLatitude(), 0, 1);
 			LCD.drawString("Long: " + gps.getLongitude(), 0, 2);
 			LCD.drawString("Alt: " + gps.getAltitude(), 0, 3);
-			//LCD.drawString("Dir: " + gps.getCourse(), 0, 4);
+			LCD.drawString("Dir: " + gps.getCourse(), 0, 4);
 			LCD.drawString("Speed: " + gps.getSpeed(), 0, 5);
 			Coordinates curC = new Coordinates(gps.getLatitude(), gps.getLongitude());
 			if(target != null) {
@@ -165,8 +158,7 @@ public class GPSInfo implements GPSListener {
 			//LCD.drawString("SV size: " + svtot, 0, 2);
 			
 			int satIndex = currentScreen - 2;
-			//gps.getSatellitesInView()
-			LCD.drawString("Satellite " + (satIndex + 1) + "/" + "", 0, 0, true);
+			LCD.drawString("Satellite " + (satIndex + 1) + "/" + gps.getSatellitesInView(), 0, 0, true);
 			Satellite s = gps.getSatellite(satIndex);
 			LCD.drawString("AZ: " + s.getAzimuth(), 0, 2);
 			LCD.drawString("Elev: " + s.getElevation(), 0, 3);
