@@ -6,11 +6,7 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
-//import java.util.*;
 
-//import android.util.Log;
-//import lejos.nxt.*;
-//import java.util.Date;
 
 /**
  * This class manages a data received from a GPS Device.
@@ -26,7 +22,7 @@ import java.util.Vector;
  * @author Juan Antonio Brenha Moral
  *
  */
-public class GPS extends Thread {
+public class GPSold extends Thread {
 
 	/**
 	 * BUFF is the amount of bytes to read from the stream at once.
@@ -82,7 +78,7 @@ public class GPS extends Thread {
 	private Date date;
 
 	//Security
-	private boolean shutdown = false;
+	private boolean close = false;
 	private boolean updateMode = false;
 	private boolean internalError = false;
 
@@ -98,7 +94,7 @@ public class GPS extends Thread {
 	 * 
 	 * @param in An input stream from the GPS receiver
 	 */
-	public GPS(InputStream in) {
+	public GPSold(InputStream in) {
 		this.in = in;
 		
 		ggaSentence = new GGASentence();
@@ -336,9 +332,11 @@ public class GPS extends Thread {
 
 	/**
 	 * Method used to finish the Thread
+	 * @throws IOException 
 	 */
-	public void shutDown(){
-		this.shutdown = true;
+	public void close() throws IOException{
+		this.close = true;
+		in.close();
 	}
 	
 	public boolean existInternalError(){
@@ -353,12 +351,12 @@ public class GPS extends Thread {
 		String token = "";
 		String s = "";
 		
-		while(!shutdown) {
+		while(!close) {
 			
 			//2008/08/02
 			//If update mode is True, internal values can be updated
 			//It is a way to save CPU
-			if(updateMode){
+			//if(updateMode){
 				s = getNextString();
 
 				// Check if sentence is valid:
@@ -392,7 +390,7 @@ public class GPS extends Thread {
 					token = "";
 					s = "";
 				}
-			}
+			//}
 		}
 	}
 
@@ -478,8 +476,8 @@ public class GPS extends Thread {
 	 */
 	private void parseGGA(String nmeaSentence){
 
-		ggaSentence.setSentence(nmeaSentence);
-		ggaSentence.parse();
+		//ggaSentence.setSentence(nmeaSentence);
+		ggaSentence.parse(nmeaSentence);
 		
 		this.RAWtime = ggaSentence.getTime();
 		
@@ -530,8 +528,8 @@ public class GPS extends Thread {
 	 * @param nmeaSentece
 	 */
 	private void parseRMC(String nmeaSentence){
-		rmcSentence.setSentence(nmeaSentence);
-		rmcSentence.parse();
+		//rmcSentence.setSentence(nmeaSentence);
+		rmcSentence.parse(nmeaSentence);
 		
 		//Charles Manning notes
 		//Is better use VTG instead of RMC
@@ -578,8 +576,8 @@ public class GPS extends Thread {
 	 * @param nmeaSentece
 	 */
 	private void parseVTG(String nmeaSentence){
-		vtgSentence.setSentence(nmeaSentence);
-		vtgSentence.parse();
+		//vtgSentence.setSentence(nmeaSentence);
+		vtgSentence.parse(nmeaSentence);
 		
 		this.speed = vtgSentence.getSpeed();
 
@@ -595,8 +593,8 @@ public class GPS extends Thread {
 	 * @param nmeaSentece
 	 */
 	private void parseGSV(String nmeaSentence){
-		gsvSentence.setSentence(nmeaSentence);
-		gsvSentence.parse();
+		//gsvSentence.setSentence(nmeaSentence);
+		gsvSentence.parse(nmeaSentence);
 /*
 		this.ns[0] = gsvSentence.getSatellite(0);
 		this.ns[1] = gsvSentence.getSatellite(1);
@@ -613,8 +611,8 @@ public class GPS extends Thread {
 	 * @param nmeaSentece
 	 */
 	private void parseGSA(String nmeaSentence){
-		gsaSentence.setSentence(nmeaSentence);
-		gsaSentence.parse();
+		//gsaSentence.setSentence(nmeaSentence);
+		gsaSentence.parse(nmeaSentence);
 		
 		mode = gsaSentence.getMode();
 		modeValue = gsaSentence.getModeValue();

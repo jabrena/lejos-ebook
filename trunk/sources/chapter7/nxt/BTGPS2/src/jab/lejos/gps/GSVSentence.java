@@ -32,7 +32,7 @@ public class GSVSentence extends NMEASentence{
 	
 	//GGA
 	private String nmeaHeader = "";
-	private int satellitesTracked = 0;
+	private int satellitesInView = 0;
 	private final int MAXIMUMSATELLITES = 4;
 	private Satellite ns1;
 	private Satellite ns2;
@@ -74,8 +74,8 @@ public class GSVSentence extends NMEASentence{
 	 * 
 	 * @return Number of satellites e.g. 8
 	 */
-	public int getSatellitesTracked() {
-		return satellitesTracked;
+	public int getSatellitesInView() {
+		return satellitesInView;
 	}
 
 	/**
@@ -102,9 +102,9 @@ public class GSVSentence extends NMEASentence{
 	/**
 	 * Method used to parse a GSV Sentence
 	 */
-	public void parse(){
+	public void parse(String sentence){
 		//StringTokenizer st = new StringTokenizer(nmeaSentence,",");
-		st = new StringTokenizer(nmeaSentence,",");
+		st = new StringTokenizer(sentence,",");
 		int PRN = 0;
 		int elevation = 0;
 		int azimuth = 0;
@@ -139,12 +139,12 @@ public class GSVSentence extends NMEASentence{
 			nmeaHeader = part1;
 			
 			if(part3.length() == 0){
-				satellitesTracked = 0;
+				satellitesInView = 0;
 			}else{
-				satellitesTracked = Math.round(Float.parseFloat(part3));
+				satellitesInView = Math.round(Float.parseFloat(part3));
 			}
 			
-			if(satellitesTracked > 0){
+			if(satellitesInView > 0){
 				
 				//SAT 1
 				

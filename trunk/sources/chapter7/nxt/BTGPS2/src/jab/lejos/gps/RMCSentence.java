@@ -125,8 +125,8 @@ public class RMCSentence extends NMEASentence{
 	 * 
 	 * $GPRMC,081836,A,3751.65,S,14507.36,E,000.0,360.0,130998,011.3,E*62
 	 */
-	public void parse (){
-		st = new StringTokenizer(nmeaSentence,",");
+	public void parse (String sentence){
+		st = new StringTokenizer(sentence,",");
 	
 		try{
 			
