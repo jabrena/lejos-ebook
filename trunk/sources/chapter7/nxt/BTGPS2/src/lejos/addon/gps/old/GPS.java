@@ -1,7 +1,12 @@
-package lejos.addon.gps;
+package lejos.addon.gps.old;
 
 import java.io.*;
 import java.util.*;
+
+import lejos.addon.gps.old.RMCSentence;
+import lejos.addon.gps.old.GSVSentence;
+import lejos.addon.gps.old.Satellite;
+import lejos.addon.gps.old.SimpleGPS;
 
 /**
  * This class manages data received from a GPS Device.

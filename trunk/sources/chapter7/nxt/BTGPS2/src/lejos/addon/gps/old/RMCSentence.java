@@ -1,7 +1,8 @@
-package lejos.addon.gps;
+package lejos.addon.gps.old;
 
 
 import java.util.*;
+
 
 /**
  * RMC is a Class designed to manage RMC Sentences from a NMEA GPS Receiver

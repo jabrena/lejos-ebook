@@ -1,4 +1,4 @@
-package lejos.addon.gps;
+package lejos.addon.gps.old;
 
 
 /**
