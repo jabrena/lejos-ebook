@@ -1,20 +1,12 @@
-package jab.le.ch7.gps.tests;
-
+package jab.le.ch7.gps;
 import lejos.addon.gps.*;
 import lejos.nxt.*;
 import lejos.nxt.comm.*;
 import lejos.util.Stopwatch;
 import lejos.util.TextMenu;
 
-//import jab.lejos.gps.Date;
-//import jab.lejos.gps.GPS;
-//import jab.lejos.gps.Satellite;
-
-//import java.util.*;
+import java.util.*;
 import java.io.*;
-import java.util.Date;
-import java.util.Vector;
-
 import javax.bluetooth.*;
 import javax.microedition.location.*;
 
@@ -38,9 +30,9 @@ import javax.microedition.location.*;
  * @author BB
  * @author Juan Antonio Brenha Moral
  */
-public class TestGPSFull{
+public class BTGPS{
 	private static String appName = "GPS";
-	private static String appVersion = "v7.0";
+	private static String appVersion = "v6.8";
 
 	//Inquire code
 	private static int cod = 0; // 0 picks up every Bluetooth device regardless of Class of Device (cod).
@@ -312,7 +304,7 @@ public class TestGPSFull{
 		LCD.drawString("" + gps.getLongitudeDirection() , 15, 5);
 		LCD.drawString("Alt " + gps.getAltitude(), 0, 6);
 		LCD.drawString("Sat " + gps.getSatellitesTracked(), 0, 7);
-		//LCD.drawString("QOS " + gps.getFixMode(), 6, 7);
+		LCD.drawString("QOS " + gps.getFixMode(), 6, 7);
 		LCD.refresh();
 	}
 
@@ -374,10 +366,10 @@ public class TestGPSFull{
 		LCD.drawString("" + ns2.getAzimuth(),9,5);
 		LCD.drawString("" + ns3.getAzimuth(),9,6);
 		LCD.drawString("" + ns4.getAzimuth(),9,7);
-		//LCD.drawString("" + ns1.getSignalNoiseRatio(),13,4);
-		//LCD.drawString("" + ns2.getSignalNoiseRatio(),13,5);
-		//LCD.drawString("" + ns3.getSignalNoiseRatio(),13,6);
-		//LCD.drawString("" + ns4.getSignalNoiseRatio(),13,7);
+		LCD.drawString("" + ns1.getSignalNoiseRatio(),13,4);
+		LCD.drawString("" + ns2.getSignalNoiseRatio(),13,5);
+		LCD.drawString("" + ns3.getSignalNoiseRatio(),13,6);
+		LCD.drawString("" + ns4.getSignalNoiseRatio(),13,7);
 		LCD.refresh();
 	}
 
@@ -388,8 +380,8 @@ public class TestGPSFull{
 		refreshSomeLCDLines();
 		LCD.drawString("Sat quality data", 0, 2);
 
-		//LCD.drawString("Mode " + gps.getSelectionType(), 0, 3);
-		//LCD.drawString("Value " + gps.getFixType(), 8, 3);
+		LCD.drawString("Mode " + gps.getSelectionType(), 0, 3);
+		LCD.drawString("Value " + gps.getFixType(), 8, 3);
 		LCD.drawString("NSat " + gps.getSatellitesTracked(), 0, 4);
 		LCD.drawString("PDOP " + gps.getPDOP(), 0, 5);
 		LCD.drawString("HDOP " + gps.getHDOP(), 0, 6);
