@@ -65,6 +65,8 @@ public class MagellanTest {
 			heading = magellan.getRelativeHeading(compass);
 			
 			System.out.println("Heading: " + heading);
+			
+			System.out.println("TS: " + magellan.getTimestamp());
 
 			Delay.msDelay(oneSecond);
 			
