@@ -1,6 +1,8 @@
-package lejos.addon.gps;
+package lejos.addon.gps.old;
 
 import java.util.*;
+
+import lejos.addon.gps.old.NMEASentence;
 
 /**
  * This class has been designed to manage a GSA Sentence

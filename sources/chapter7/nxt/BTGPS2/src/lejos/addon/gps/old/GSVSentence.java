@@ -1,6 +1,9 @@
-package lejos.addon.gps;
+package lejos.addon.gps.old;
 
 import java.util.*;
+
+import lejos.addon.gps.old.NMEASentence;
+import lejos.addon.gps.old.Satellite;
 
 /**
  * This class has been designed to manage a GSV Sentence

@@ -1,7 +1,9 @@
-package lejos.addon.gps;
+package lejos.addon.gps.old;
 
 
 import java.util.EventListener;
+
+import lejos.addon.gps.old.NMEASentence;
 
 /**
  * This is the interface to manage events with GPS
