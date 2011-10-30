@@ -1,23 +1,23 @@
 package jab.le.ch7.gps.tests;
 
-//import lejos.addon.gps.*;
+import lejos.addon.gps.*;
 import lejos.nxt.*;
 import lejos.nxt.comm.*;
-import lejos.util.Stopwatch;
+//import lejos.util.Stopwatch;
 import lejos.util.TextMenu;
 
 //import jab.lejos.gps.Date;
-import jab.lejos.gps.GPSold;
-import jab.lejos.gps.Satellite;
-import jab.lejos.gps.SimpleGPS;
+//import jab.lejos.gps.GPSold;
+//import jab.lejos.gps.Satellite;
+//import jab.lejos.gps.SimpleGPS;
 
 //import java.util.*;
 import java.io.*;
-import java.util.Date;
+//import java.util.Date;
 import java.util.Vector;
 
 import javax.bluetooth.*;
-import javax.microedition.location.*;
+//import javax.microedition.location.*;
 
 /**
  * This example show how to:
