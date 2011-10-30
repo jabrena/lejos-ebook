@@ -1,4 +1,4 @@
-package jab.le.ch7.gps;
+package jab.le.ch7.gps.tests;
 import lejos.addon.gps.*;
 import lejos.nxt.*;
 import lejos.nxt.comm.*;
