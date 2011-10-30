@@ -1,4 +1,4 @@
-package jab.le.ch7.gps;
+package jab.le.ch7.gps.tests;
 import java.io.*;
 import java.util.Date;
 
