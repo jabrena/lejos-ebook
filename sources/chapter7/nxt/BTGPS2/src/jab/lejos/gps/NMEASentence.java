@@ -24,21 +24,17 @@ abstract public class NMEASentence {
 	public static final int LONGITUDE = 1;
 
 	/**
-	 * Set a new NMEA sentence into the object
-	 * 
-	 * @param sentence
-	 */
-	public void setSentence(String sentence){
-		nmeaSentence = sentence;
-	}
-
-	/**
 	 *  Retrieve the header constant for this sentence.
 	 *  @return The NMEA header string ($GPGGA, $GPVTG, etc...)   
 	 */
 	// TODO: Maybe getSentenceType()?
 	// TODO: Should it return the $ too, or maybe have a list of constants?
 	abstract public String getHeader();
+	
+	/**
+	 * Abstract method to parse out all relevant data from the nmeaSentence.
+	 */
+	abstract protected void parse(String sentence);
 	
 	/**
 	 * Return if your NMEA Sentence is valid or not
@@ -177,5 +173,22 @@ abstract public class NMEASentence {
 		    return false; // invalid
 		}
 		return true; // valid
+	}
+	
+	/**
+	 *  This method is called by all the getter methods. It checks if a new sentence has 
+	 *  been received since the last call. 
+	 *  It sets nmeaSentence to null to act as flag for when method called again.
+	 */
+	protected synchronized void checkRefresh() {
+		if(nmeaSentence != null) {
+			// First need to cut off verification code at end of sentence:
+			int end = nmeaSentence.indexOf('*');
+			if(end < 0) end = nmeaSentence.length();
+			String nmeaSub = nmeaSentence.substring(0, end);
+			
+			parse(nmeaSub);
+			nmeaSentence = null; // Once data is parsed, discard string (used as flag)
+		}
 	}
 }

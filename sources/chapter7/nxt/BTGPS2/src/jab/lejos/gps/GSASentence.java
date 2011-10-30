@@ -124,8 +124,9 @@ public class GSASentence extends NMEASentence{
 	/**
 	 * Method used to parse a GGA Sentence
 	 */
-	public void parse(){
-		st = new StringTokenizer(nmeaSentence,",");
+	protected void parse(String sentence){
+		
+		st = new StringTokenizer(sentence,",");
 
 		try{
 			
