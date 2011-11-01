@@ -1,8 +1,8 @@
-package jab.le.ch7.gps.utils;
+package jab.le.ch9.gps.utils;
 
-import jab.le.ch7.gps.kml.KML;
-import jab.le.ch7.gps.kml.Placemark;
-import jab.le.ch7.io.FileManager3;
+import jab.le.ch9.gps.kml.KML;
+import jab.le.ch9.gps.kml.Placemark;
+import jab.le.ch9.io.FileManager3;
 
 import java.util.Random;
 

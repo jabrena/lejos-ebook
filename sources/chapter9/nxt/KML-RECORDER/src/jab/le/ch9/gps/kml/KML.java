@@ -1,4 +1,4 @@
-package jab.le.ch7.gps.kml;
+package jab.le.ch9.gps.kml;
 
 import java.util.Vector;
 
