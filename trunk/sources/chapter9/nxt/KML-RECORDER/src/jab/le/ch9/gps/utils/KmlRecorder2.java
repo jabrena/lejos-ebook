@@ -1,4 +1,5 @@
-package jab.le.ch7.gps.utils;
+package jab.le.ch9.gps.utils;
+
 
 import javax.microedition.location.Coordinates;
 import javax.microedition.location.Criteria;

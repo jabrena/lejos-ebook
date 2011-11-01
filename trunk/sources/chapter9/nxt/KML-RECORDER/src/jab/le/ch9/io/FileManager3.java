@@ -1,4 +1,4 @@
-package jab.le.ch7.io;
+package jab.le.ch9.io;
 import java.io.*;
 import lejos.nxt.LCD;
 
