@@ -29,7 +29,7 @@ public class FileManager3{
 	
 	//GETTER AND SETTERS METHODS
 	
-	public void setFileName(String fileName){
+	public final void setFileName(final String fileName){
 		this.fileName = fileName;
 	}
 	
@@ -38,11 +38,11 @@ public class FileManager3{
 	/**
 	 * Open a File Connection
 	 */
-	public void open(){
+	public final void open(){
 		try{
 			f = new File(fileName);
 			if(!f.exists()){
-				f.createNewFile();
+				boolean created = f.createNewFile();
 				fos = new  FileOutputStream(f);
 			}else{
 				if(overwriteFile){
@@ -64,11 +64,11 @@ public class FileManager3{
 	 * Method to
 	 * @param text
 	 */
-	public void add(String text){
+	public final void add(String text){
 		appendToFile(text);
 	}
 
-	public void close(){
+	public final void close(){
 		try{
 			fos.close();
         }catch(IOException e){
@@ -76,10 +76,10 @@ public class FileManager3{
         }
     }
 
-	public void delete(){
+	public final void delete(){
 		f = new File(fileName);
 		if(f.exists()){
-			f.delete();
+			boolean deleted = f.delete();
 		}
 	}
 	

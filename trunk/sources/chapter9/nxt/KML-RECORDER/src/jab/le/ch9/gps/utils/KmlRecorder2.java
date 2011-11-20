@@ -7,9 +7,9 @@ import javax.microedition.location.Location;
 import javax.microedition.location.LocationException;
 import javax.microedition.location.LocationProvider;
 
+import lejos.nxt.Battery;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
-import lejos.nxt.Sound;
 import lejos.util.Delay;
 
 public class KmlRecorder2 {
@@ -47,6 +47,10 @@ public class KmlRecorder2 {
 	 */
 	public static void main(String[] args) {
 
+		Battery.getVoltage();
+		Battery.getVoltageMilliVolt();
+		Battery.isRechargeable();
+		
 		long iteration = 0;
 
 		if(!getConnection()){
@@ -107,7 +111,7 @@ public class KmlRecorder2 {
 		LCD.drawString("Java leJOS",0,4);
 		LCD.drawString("www.lejos.org",0,6);
 		LCD.refresh();
-		try {Thread.sleep(seconds*1000);} catch (Exception e) {}
+		//try {Thread.sleep(seconds*1000);} catch (Exception e) {}
 	}
 
 }

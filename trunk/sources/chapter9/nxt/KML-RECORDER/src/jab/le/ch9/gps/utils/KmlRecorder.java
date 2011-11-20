@@ -102,7 +102,7 @@ public class KmlRecorder {
 		LCD.drawString("Java leJOS",0,4);
 		LCD.drawString("www.lejos.org",0,6);
 		LCD.refresh();
-		try {Thread.sleep(seconds*1000);} catch (Exception e) {}
+		Delay.msDelay(oneSecond);
 	}
 
 }

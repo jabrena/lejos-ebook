@@ -29,7 +29,7 @@ public class WaypointRecorder extends Thread{
 	public static final int MODE_AUTO = 0;
 	public static final int MODE_INTERACTIVE = 1;
 	
-	private final String CRLF = "\r\n";
+	public static final String CRLF = "\r\n";
 	private String name = "LeJOS Runner";
 	private String description = "This file store KML Points stored in a leJOS Runner session";
 	private String folderName = "LeJOS Runner Placemarks";
@@ -85,7 +85,7 @@ public class WaypointRecorder extends Thread{
 		now = ts;
 	}
 	
-	public void run(){
+	public final void run(){
 		
 		while(true){
 			
@@ -165,7 +165,7 @@ public class WaypointRecorder extends Thread{
 		
 	}
 	
-	public void close(){
+	public final void close(){
 		fm.open();
 		text = k.getKMLFooter();
 		fm.add(text);
