@@ -40,7 +40,7 @@ public class Magellan {
 		}
 	}
 	
-	public double getDistance(){
+	public final double getDistance(){
 		double distance = 0f;
 		
 		//double latitude, longitude = 0;
@@ -99,7 +99,7 @@ public class Magellan {
 		return azimuth;
 	}
 	
-	public long getTimestamp(){
+	public final long getTimestamp(){
 		
 		long timestamp = 0;
 		
@@ -114,7 +114,7 @@ public class Magellan {
 		return timestamp;
 	}
 	
-	public double getRelativeHeading(CompassMindSensor compass ){
+	public final double getRelativeHeading(CompassMindSensor compass ){
 		
 		double compassDegrees = 90;
 		double target = this.getAzimuthTo();
@@ -128,4 +128,5 @@ public class Magellan {
 	    return result;
 		
 	}
+	
 }
