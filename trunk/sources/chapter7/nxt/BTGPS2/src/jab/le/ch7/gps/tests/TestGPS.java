@@ -13,6 +13,7 @@ import lejos.util.TextMenu;
 //import java.util.*;
 import java.io.*;
 //import java.util.Date;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.bluetooth.*;
@@ -98,13 +99,13 @@ public class TestGPS{
 		LCD.drawString("Searching...", 0, 0);
 		LCD.refresh();
 		//Make an BT inquire to get all Devices with BT Services enable
-		Vector devList = Bluetooth.inquire(5, 10,cod);
+		ArrayList<RemoteDevice> devList = Bluetooth.inquire(5, 10,cod);
 
 		//If exist GPS Devices near
 		if (devList.size() > 0){
 			String[] names = new String[devList.size()];
 			for (int i = 0; i < devList.size(); i++) {
-				RemoteDevice btrd = ((RemoteDevice) devList.elementAt(i));
+				RemoteDevice btrd = ((RemoteDevice) devList.get(i));
 				names[i] = btrd.getFriendlyName(true);
 			}
 				
@@ -120,7 +121,7 @@ public class TestGPS{
 				//Menu 1: Show all BT Devices
 				selected = searchMenu.select();
 				if (selected >=0){
-					RemoteDevice btrd = ((RemoteDevice) devList.elementAt(selected));
+					RemoteDevice btrd = ((RemoteDevice) devList.get(selected));
 					LCD.clear();
 					LCD.drawString("Found",6,0);
 					LCD.drawString(names[selected],0,1);
