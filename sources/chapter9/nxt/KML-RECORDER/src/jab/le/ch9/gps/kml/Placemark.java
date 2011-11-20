@@ -1,5 +1,5 @@
 package jab.le.ch9.gps.kml;
-import java.lang.StringBuffer;
+//import java.lang.StringBuffer;
 
 public class Placemark {
 	
@@ -8,8 +8,7 @@ public class Placemark {
 	private double latitude = 0;
 	private double longitude = 0;
 	private double altitude = 0;
-	private StringBuffer sb;
-	private final String CRLF = "\r\n";
+	public static final String CRLF = "\r\n";
 	//http://code.google.com/intl/es-ES/apis/kml/documentation/kmlreference.html
 	//<extrude>0</extrude> 
 	//<altitudeMode>clampToGround</altitudeMode>  <!-- kml:altitudeModeEnum: clampToGround, relativeToGroundo absolute -->
@@ -29,16 +28,18 @@ public class Placemark {
       </Icon>
       http://kml-samples.googlecode.com/svn/trunk/interactive/index.html
 	 */
-	
+	public Placemark(){
+		
+	}
 
-	public Placemark(String name,String description,double latitude,double longitude){
+	public Placemark(final String name,final String description,final double latitude,final double longitude){
 		this.name = name;
 		this.description = description;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 
-	public Placemark(String name,String description,double latitude,double longitude,double altitude){
+	public Placemark(final String name, final String description, final double latitude, final double longitude,final double altitude){
 		this.name = name;
 		this.description = description;
 		this.latitude = latitude;
@@ -46,33 +47,54 @@ public class Placemark {
 		this.altitude = altitude;
 	}
 
-	public Placemark(){
-		
-	}
 
-	public void setName(String pName){
+	public void setName(final String pName){
 		name = pName;
 	}
+	
+	public String getName(){
+		return name;
+	}
 
-	public void setDescription(String pDescription){
+	public void setDescription(final String pDescription){
 		description = pDescription;
 	}
 	
-	public void setLatitude(double pLatitude){
+	public String getDescription(){
+		return description;
+	}
+	
+	public void setLatitude(final double pLatitude){
 		latitude = pLatitude;
 	}
 
-	public void setLongitude(double pLongitude){
+	public double getLatitude(){
+		return latitude;
+	}
+	
+	public void setLongitude(final double pLongitude){
 		longitude = pLongitude;
 	}
 	
+	public double getLongitude(){
+		return longitude;
+	}
+	
+	public void setAltitude(final double pAltitude){
+		altitude = pAltitude;
+	}
+	
+	public double getAltitude(){
+		return altitude;
+	}
+	
 	public String toString(){
-		sb = new StringBuffer();
-		sb.append("<Placemark>"+CRLF);
-		sb.append("<name>" + this.name + "</name>"+CRLF);
-		sb.append("<description>" + this.description + "</description>"+CRLF);
-		sb.append("<Point><coordinates>" + this.longitude + "," + this.latitude + "," + this.altitude + "</coordinates></Point>"+CRLF);
-		sb.append("</Placemark>"+CRLF);
-		return sb.toString();
+		final StringBuffer xmlNode = new StringBuffer(264);
+		xmlNode.append("<Placemark>"+ CRLF);
+		xmlNode.append("<name>" + this.name + "</name>"+CRLF);
+		xmlNode.append("<description>" + this.description + "</description>"+CRLF);
+		xmlNode.append("<Point><coordinates>" + this.longitude + "," + this.latitude + "," + this.altitude + "</coordinates></Point>"+CRLF);
+		xmlNode.append("</Placemark>"+CRLF);
+		return xmlNode.toString();
 	}
 }

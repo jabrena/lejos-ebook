@@ -4,14 +4,11 @@ import java.util.Vector;
 
 public class KML {
 	private Vector al;
-	private StringBuffer sb;
 	private String fileName;
 	private String fileDescription;
 	private String folderName;
 	private String folderDescription;
-	private final String CRLF = "\r\n";
-	
-
+	private static final String CRLF = "\r\n";
 	
 	public KML(String _fileName,String _fileDescription,String _folderName,String _folderDescription){
 		al = new Vector();
