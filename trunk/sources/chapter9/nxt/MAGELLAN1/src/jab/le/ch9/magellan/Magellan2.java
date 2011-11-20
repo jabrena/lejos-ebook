@@ -116,6 +116,7 @@ public class Magellan2 {
 	                     * math.cos(lon2 - lon1)) * R
 	*/
 	
+	//http://mathworld.wolfram.com/SphericalTrigonometry.html
 	private double getSLCDistance(double lat1,double lon1,double lat2,double lon2){
 		
 		double distance = 0;
