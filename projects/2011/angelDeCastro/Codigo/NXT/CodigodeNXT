@@ -1,0 +1,60 @@
+Boolean isrunning=true;
+
+//Bucle principal     
+while (true)
+
+{
+
+    LCD.drawString(waiting,0,0);
+
+    LCD.refresh();
+
+    //Estar a la escucha
+
+        NXTConnection btc = Bluetooth.waitForConnection();
+
+        btc.setIOMode(NXTConnection.RAW);
+
+    LCD.clear();
+
+    LCD.drawString(connected,0,0);
+
+    LCD.refresh();  
+
+
+
+
+
+    //El InputStream para leer
+
+    DataInputStream dis=btc.openDataInputStream();
+
+
+
+
+
+//el bucle para escribir.
+
+    while(isrunning){
+
+        Byte n=-1;
+
+            n=dis.readByte();
+
+        LCD.clear();
+
+        LCD.drawInt(n, 4, 4);
+
+            }
+     dis.close();
+     Thread.sleep(100); 
+
+ LCD.clear();
+
+ LCD.drawString(closing,0,0);
+
+ LCD.refresh();
+
+ btc.close();
+
+ LCD.clear();
