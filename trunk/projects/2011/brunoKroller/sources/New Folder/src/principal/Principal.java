@@ -11,8 +11,7 @@ public class Principal implements ButtonListener {
 
 	//Variables Globals
 	Boolean enable=false;
-	
-	
+		
 	//Auxiliary classes
 	void anyerror(int xcase){
 		switch(xcase){
@@ -38,7 +37,7 @@ public class Principal implements ButtonListener {
 		UltrasonicSensor uss2;
 		int se = 0;
 		CompassSensor cS;
-		
+		Navegar nav = new Navegar(4,4);
 		
 		
 		//--File
@@ -76,40 +75,15 @@ public class Principal implements ButtonListener {
 			longitude=gps.getLongitude();
 			
 		}
-		//Initialize FILE
-		datos = new File(nfichero);
-		if(datos.exists()){
-			try {
-				int i=0;
-					bw = new BufferedWriter(new FileWriter(nfichero) );
-					bw.write(i+"Inicializar: "+latitude+longitude+"\n");
-					i++;
-					bw.close();
-					
-				} catch (IOException e1) {
-					
-					e1.printStackTrace();
-				}
-			
-	
-			
-			
-		}
+
 		//Initialize Ultrasound Sensor
 		uss1= new UltrasonicSensor(SensorPort.S1);
-		uss2= new UltrasonicSensor(SensorPort.S4);
 		se=uss1.setMode(uss1.MODE_CONTINUOUS);
 		if(se!=0)
 		{
 			listener.anyerror(2);
 		}
-		else{
-			se=uss2.setMode(uss2.MODE_CONTINUOUS);
-			if(se!=0)
-			{
-				listener.anyerror(2);
-			}
-		}
+		
 		
 		//Initialize Compass
 		cS= new CompassSensor(SensorPort.S2);
@@ -144,17 +118,45 @@ public class Principal implements ButtonListener {
 		//Set destination coordinates
 		gps.setLatitude(lat);
 		gps.setLongitude(lng);
-		//Calculate distance to target and the degres where it is
 		
-		Vector<Double> Init = new Vector<Double>(0,0);
-		Vector<Double> End= new Vector<Double>(0,0);
-		
+		//Get Angel to destination
 		float angel_dest = gps.getAngleToDest();
-		float angel_curent = cS.getDegreesCartesian();
+		if(angel_dest!=0)
+		{
+			System.err.println("Failed to get angel to destination");
+			Button.waitForPress();
+		}
+		float angel_curent = cS.getDegreesCartesian(); //falta control de error
+
+		
+		//Get actual position	
+		int latAct;
+		int lngAct;
+				
+		latAct=gps.getLatitude();
+		lngAct=gps.getLongitude();
 		
 		
+		//Distans to target
+		int distTarg;
+		distTarg=gps.getDistanceToDest();
 		
+		//Waypoint set
+		//int WayPnt0=(int) Math.sqrt(Math.pow((lat-latAct), 2)+Math.pow((lng-lngAct), 2));
 		
+		int WayPnt1= distTarg/4;
+		int WayPnt2= distTarg/2;
+		int WayPnt3= 3*distTarg/4;
+		int WayPnt4= 0;
+		
+		while(gps.getDistanceToDest()!=WayPnt1)
+		{
+			nav.forward();
+			if(uss1.getDistance()<100)
+			{
+				nav.esquivar();
+			}
+		}
 		
 		
 		
