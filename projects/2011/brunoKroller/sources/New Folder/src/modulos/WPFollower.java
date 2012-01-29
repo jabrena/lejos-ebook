@@ -5,7 +5,7 @@ import javax.microedition.location.*;
 import java.io.*;
 import java.util.Properties;
 
-public class WaypointFollower implements ProximityListener {
+public class WPFollower implements ProximityListener {
 
 	public static final int MAX_SPEED = 900;
 	public static final int MED_SPEED = 700;
@@ -15,7 +15,7 @@ public class WaypointFollower implements ProximityListener {
 	
 	public static void main(String[] args) {
 		powerSteer(MAX_SPEED, MAX_SPEED);
-		WaypointFollower proximityListener = new WaypointFollower();
+		WPFollower proximityListener = new WPFollower();
 		
 		// Get an instance of the provider:
 		LocationProvider lp = null;
