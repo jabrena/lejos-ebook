@@ -1,0 +1,11 @@
+//la primera vez para los modulos se ha de ejecutar
+//Esto hace que se compilen todas las clases de java
+nxjc modulos/*.java
+
+//hay que llegar a la carpeta src
+//Esto hace que se compilen todas las clases de java
+nxjc principal/*.java
+//linkeamos las clases compiladas
+nxjlink -v principal.ControlUnit -o ControlUnit.nxj
+//Subimos la compilación al robot ( el robot tiene que estar conectado)
+nxjupload ControlUnit.nxj
