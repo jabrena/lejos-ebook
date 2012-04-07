@@ -9,7 +9,6 @@ public class ScanArea {
 	
 	//array to store the distances
 	private  int a=0;
-	private int b=0;
 	private int i=0;
 	private int grads=-90;
 	
@@ -24,21 +23,35 @@ public class ScanArea {
 		Motor.B.rotateTo(grads);
 		
 		//Start Scanning the area to see the distances
+		int b=uss.getDistance();
+		boolean abig = false;
+		int whenb=0;
 		
 		for(i=1;i<11;i++)
 		{
-				b=a;
 				a=uss.getDistance();
+				//give the sensor time to read correctly
 				waits(1);
 				Motor.B.rotate(20);
 			if(a >225)
 			{
+				abig=true;
 				break;
 			}
-	
-								
+			//look for the place with more space
+			if(b<a)
+			{
+				b=a;
+				whenb=i;
+			}
+									
 		}
-
+		
+		//Take the way where there is more space.Only if a was never bigger then 225
+		if(abig==false)
+		{
+			i=whenb;
+		}
 			
 		//Goes back to initial angel	
 		Motor.B.rotateTo(0);
@@ -59,7 +72,8 @@ public class ScanArea {
 		default: return 0;
 		}
 	}
-		
+	
+	//wait
 	public  void waits (int n)
 	{
 	        long t0,t1;
